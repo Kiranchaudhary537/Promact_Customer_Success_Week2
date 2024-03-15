@@ -1,0 +1,23 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label for="stake">Tech Stack</label>
+    <select id="stake" class="form-control" formControlName="stake">
+      <option value="" disabled selected>Select Tech Stack</option>
+      <option value="Angular">Angular</option>
+      <option value="React">React</option>
+      <option value="Vue">Vue</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="scope">Scope</label>
+    <input
+      id="scope"
+      type="text"
+      class="form-control"
+      formControlName="scope"
+      placeholder="Scope"
+    />
+  </div>
+
+  <button type="submit" class="btn btn-primary my-2" >Save</button>
+</form>

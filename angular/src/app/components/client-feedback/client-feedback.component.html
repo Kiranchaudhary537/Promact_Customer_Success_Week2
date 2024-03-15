@@ -1,0 +1,71 @@
+@if (unauthorizedPerson==false) {
+<div>
+  <div class="container mt-5">
+    <h3 class="text-center m-1">You are not authorized to view this table.</h3>
+  </div>
+</div>
+} @if (unauthorizedPerson==true) {
+<div class="container mt-2">
+  <button type="submit" class="btn btn-outline-success" (click)="addRow()">Add Row</button>
+  <form [formGroup]="forms" (ngSubmit)="onSubmit()">
+    <div formArrayName="formitem">
+      <table class="table">
+        <thead>
+          <tr>
+            @for(colums of displayedColumns;track colums){
+            <th>{{ colums }}</th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for(f of getformitems().controls;track f;let i=$index){
+
+          <tr [formGroupName]="i">
+            <td>
+              <select class="form-control" id="feedbacktype" formControlName="feedbacktype">
+                <option value="Positive">Positive</option>
+                <option value="Negative">Negative</option>
+              </select>
+            </td>
+            <td>
+              <input
+                type="text"
+                class="form-control"
+                id="receivedate"
+                formControlName="receivedate"
+                placeholder="yyyy-mm-dd"
+              />
+            </td>
+            <td>
+              <input 
+              type="text" 
+              class="form-control" id="details" 
+              formControlName="details"
+              placeholder="text"
+               />
+            </td>
+            <td>
+              <select class="form-control" id="feedbacktype" formControlName="action">
+                <option value="true">True</option>
+                <option value="false">False</option>
+              </select>
+            </td>
+            <td>
+              <input type="text" class="form-control"
+               id="closure" 
+               formControlName="closure"
+               placeholder="yyyy-mm-dd"
+                />
+            </td>
+            <td>
+              <i class="fs-2 bi-trash-fill danger text-danger" (click)="removeRow(i)"></i>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <button type="submit" class="btn btn-success">Submit</button>
+  </form>
+</div>
+}

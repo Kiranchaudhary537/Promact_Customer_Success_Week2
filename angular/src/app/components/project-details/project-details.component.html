@@ -1,0 +1,204 @@
+<div class="container">
+  <div>
+    <button class="btn btn-primary" (click)="generatePdf()">generatePdf</button>
+  </div>
+  <ul class="nav nav-tabs my-3 flex-row overflow-hidden" id="ex1" role="tablist">
+    <li class="nav-item" role="presentation">
+      <a
+        data-mdb-tab-init
+        class="nav-link"
+        role="tab"
+        id="overview"
+        aria-controls="overview"
+        aria-selected="true"
+        routerLink="overview"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+        >Project Overview
+      </a>
+    </li>
+    <li class="nav-item" role="presentation">
+      <a
+        data-mdb-tab-init
+        class="nav-link"
+        role="tab"
+        aria-selected="true"
+        id="scopestake"
+        aria-controls="scopestake"
+        routerLink="scopestake"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+        >Scope and Stake
+      </a>
+    </li>
+    <li class="nav-item" role="presentation">
+      <a
+        data-mdb-tab-init
+        class="nav-link"
+        role="tab"
+        id="projectresources"
+        aria-controls="projectresources"
+        aria-selected="true"
+        routerLink="projectresources"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+        >Resources
+      </a>
+    </li>
+    <li class="nav-item" role="presentation">
+      <a
+        data-mdb-tab-init
+        class="nav-link"
+        role="tab"
+        id="approvedteam"
+        aria-controls="approvedteam"
+        aria-selected="true"
+        routerLink="approvedteam"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+        >Approved Team</a
+      >
+    </li>
+    <li class="nav-item" role="presentation">
+      <a
+        data-mdb-tab-init
+        class="nav-link"
+        role="tab"
+        id="clientfeedback"
+        aria-controls="clientfeedback"
+        aria-selected="true"
+        routerLink="clientfeedback"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+        >Client Feedback</a
+      >
+    </li>
+    <li class="nav-item" role="presentation">
+      <a
+        data-mdb-tab-init
+        class="nav-link"
+        role="tab"
+        id="phase"
+        aria-controls="phase"
+        aria-selected="true"
+        routerLink="phase"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+        >Phase</a
+      >
+    </li>
+    <li class="nav-item" role="presentation">
+      <a
+        data-mdb-tab-init
+        class="nav-link"
+        role="tab"
+        id="projectupdates"
+        aria-controls="projectupdates"
+        aria-selected="true"
+        routerLink="projectupdates"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+        >Project Updates</a
+      >
+    </li>
+    <li class="nav-item" role="presentation">
+      <a
+        data-mdb-tab-init
+        class="nav-link"
+        role="tab"
+        id="moms"
+        aria-controls="moms"
+        aria-selected="true"
+        routerLink="moms"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+        >Moms</a
+      >
+    </li>
+    <li class="nav-item" role="presentation">
+      <a
+        data-mdb-tab-init
+        class="nav-link"
+        role="tab"
+        id="stakeholder"
+        aria-controls="stakeholder"
+        aria-selected="true"
+        routerLink="stakeholder"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+        >Stakeholder</a
+      >
+    </li>
+    <li class="nav-item" role="presentation">
+      <a
+        data-mdb-tab-init
+        class="nav-link"
+        role="tab"
+        id="sprint"
+        aria-controls="sprint"
+        aria-selected="true"
+        routerLink="sprint"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+        >Sprint</a
+      >
+    </li>
+    <li class="nav-item" role="presentation">
+      <a
+        data-mdb-tab-init
+        class="nav-link"
+        role="tab"
+        id="riskprofile"
+        aria-controls="riskprofile"
+        aria-selected="true"
+        routerLink="riskprofile"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+        >Risk Profile</a
+      >
+    </li>
+    <li class="nav-item" role="presentation">
+      <a
+        data-mdb-tab-init
+        class="nav-link"
+        role="tab"
+        id="escalationmatrix"
+        aria-controls="escalationmatrix"
+        aria-selected="true"
+        routerLink="escalationmatrix"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+        >Escalation Matrix</a
+      >
+    </li>
+    <li class="nav-item" role="presentation">
+      <a
+        data-mdb-tab-init
+        class="nav-link"
+        role="tab"
+        id="audithistory"
+        aria-controls="audithistory"
+        aria-selected="true"
+        routerLink="audithistory"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+        >Audit History</a
+      >
+    </li>
+    <li class="nav-item" role="presentation">
+      <a
+        data-mdb-tab-init
+        class="nav-link"
+        role="tab"
+        id="versionhistory"
+        aria-controls="versionhistory"
+        aria-selected="true"
+        routerLink="versionhistory"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+        >Version History</a
+      >
+    </li>
+  </ul>
+  <router-outlet [id]="id"></router-outlet>
+</div>

@@ -1,0 +1,130 @@
+<div class="container-fluid">
+  <div class="d-flex col">
+    <div class="mr-2 p-2">
+      <button type="button" class="btn btn-primary mb-2" (click)="isModalOpen = true">
+        <i class="fs-5 bi-plus"></i><span class="d-none d-sm-inline">New Projects</span>
+      </button>
+      <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-start w-100" id="menu">
+        <li>
+          <a
+            routerLink="/projects"
+            routerLinkActive="active"
+            ariaCurrentWhenActive="page"
+            class="w-100 nav-link text-truncate mb-1"
+          >
+            <i class="fs-5 bi-table"></i>
+            <span class="ms-1 d-none d-sm-inline">Projects</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="w-100 nav-link text-truncate">
+            <i class="fs-5 bi-grid"></i
+            ><span class="ms-1 d-none d-sm-inline">Project Manager</span></a
+          >
+        </li>
+        <li>
+          <a href="#" class="w-100 nav-link text-truncate">
+            <i class="fs-5 bi-people"></i><span class="ms-1 d-none d-sm-inline">Employee</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="w-100 nav-link text-truncate">
+            <i class="fs-5 bi-gear"></i><span class="ms-1 d-none d-sm-inline">Setting</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col min-vh-100 py-3">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<abp-modal [(visible)]="isModalOpen">
+  <ng-template #abpHeader>
+    <h3>Modal Title</h3>
+  </ng-template>
+
+  <ng-template #abpBody>
+    @if(currentStage==1){
+    <form id="project-form" [formGroup]="projectForm" (ngSubmit)="nextStage()">
+      <div class="form-group mb-2">
+        <label for="name">Project Name</label><span> * </span>
+        <input type="text" id="name" class="form-control" formControlName="name" autofocus />
+      </div>
+      @if(projectForm.get('name').invalid && projectForm.get('name').touched){
+
+      <div class="text-danger">Project Name is required</div>
+      }
+
+      <div class="form-group">
+        <label for="descritpion">Project Description</label><span> * </span>
+        <input type="text" id="description" class="form-control" formControlName="description" />
+      </div>
+      @if(projectForm.get('description').invalid && projectForm.get('description').touched){
+
+      <div class="text-danger">Project Description is required</div>
+      }
+    </form>
+    } @if(currentStage==2){
+    <div>
+      <form id="client-form" [formGroup]="clientForm" (ngSubmit)="nextStage()">
+        <div class="form-group mb-2">
+          <label for="clientName">Client Name</label><span> * </span>
+          <input
+            type="text"
+            id="clientName"
+            class="form-control"
+            formControlName="clientName"
+            autofocus
+          />
+          @if(clientForm.get('clientName').invalid && clientForm.get('clientName').touched){
+
+          <div class="text-danger">Client Name is required</div>
+          }
+        </div>
+
+        <div class="form-group mb-2">
+          <label for="clientEmail">Client Email</label><span> * </span>
+          <input type="email" id="clientEmail" class="form-control" formControlName="clientEmail" />
+          @if(clientForm.get('clientEmail').invalid && clientForm.get('clientEmail').touched){
+
+          <div class="text-danger">Please enter a valid email address</div>
+          }
+        </div>
+      </form>
+    </div>
+    } @if(currentStage==3){
+    <div>
+      <form id="manager-form" [formGroup]="managerForm" (ngSubmit)="save()">
+        <div class="form-group mb-2">
+          <label for="manager">Select Manager</label><span> * </span>
+          <select id="manager" class="form-control" formControlName="manager">
+            <option *ngFor="let manager of managers" [value]="manager.id">
+              {{ manager.name }}
+            </option>
+          </select>
+        </div>
+      </form>
+    </div>
+    }
+  </ng-template>
+
+  <ng-template #abpFooter>
+    @if(currentStage!=1){
+    <button type="button" class="btn btn-secondary" (click)="prevStage()">Back</button>
+    }
+    <button type="button" class="btn btn-secondary" abpClose>Close</button>
+    @if(currentStage<3){
+    <button type="button" class="btn btn-primary" (click)="nextStage()">Next</button>
+    } @if(currentStage==3){
+    <button type="button" class="btn btn-primary" [disabled]="form.invalid || form.pristine">
+      Save
+    </button>
+    }
+  </ng-template>
+</abp-modal>

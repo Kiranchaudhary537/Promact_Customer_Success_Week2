@@ -1,0 +1,53 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="p-3">
+  <div class="form-group">
+    <label class="m-1" for="brief">Project Brief</label>
+    <textarea
+      id="brief"
+      class="form-control"
+      formControlName="brief"
+      placeholder="Project Brief"
+      [readonly]="form.get('brief').value != ''"
+    ></textarea>
+  </div>
+  <div class="form-group">
+    <label class="m-1" for="purpose">Purpose</label>
+    <textarea
+      id="purpose"
+      class="form-control"
+      formControlName="purpose"
+      placeholder="Purpose"
+      [readOnly]="form.get('purpose').value != ''"
+    ></textarea>
+  </div>
+  <div class="form-group">
+    <label class="m-1" for="goals ">Goals</label>
+    <textarea
+      id="goals"
+      class="form-control"
+      formControlName="goals"
+      placeholder="Goals"
+      [readOnly]="form.get('purpose').value != ''"
+    ></textarea>
+  </div>
+  <div class="form-group">
+    <label class="m-1" for="objectives">Objectives</label>
+    <textarea
+      id="objectives"
+      class="form-control"
+      formControlName="objectives"
+      placeholder="Objectives"
+      [readOnly]="form.get('objectives').value != ''"
+    ></textarea>
+  </div>
+  <div class="form-group">
+    <label class="m-1" for="budget">Budget</label>
+    <textarea
+      id="budget"
+      class="form-control"
+      formControlName="budget"
+      placeholder="Budget"
+      [readOnly]="form.get('budget').value != ''"
+    ></textarea>
+  </div>
+  <button type="submit" class="m-2 btn btn-primary" [disabled]="form.invalid">Save</button>
+</form>
