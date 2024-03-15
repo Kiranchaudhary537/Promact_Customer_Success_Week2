@@ -1,10 +1,10 @@
-// project.model.ts
 
 export interface Project {
   id?:string,
   name: string;
+  description:string,
   projectManager:string,
-  member:number,
+  member:string,
   status:string,
-  creationTime:string
+  creationTime?:Date
 }

@@ -16,7 +16,7 @@ export class ProjectsComponent implements OnInit {
   //variable
   allProjectData: Array<Project> = [];
   projectData: Array<Project> = [];
-  selectedTab: string = 'allProject';
+  selectedTab: string = 'All Progress';
   constructor(private projectService: ProjectService, private authService: AuthService) {}
   get hasLoggedIn(): boolean {
     return this.authService.isAuthenticated;
@@ -28,12 +28,12 @@ export class ProjectsComponent implements OnInit {
 
   selectTab(tabId: string): void {
     this.selectedTab = tabId;
-    if (tabId == 'all') {
+    if (tabId == 'All Progress') {
       console.log(this.allProjectData)
       this.projectData = this.allProjectData;
-    } else if (tabId == 'inprogress') {
+    } else if (tabId == 'In Progress') {
       this.projectData = this.allProjectData.filter(project => project?.status == 'inprogress');
-    } else if (tabId == 'hold') {
+    } else if (tabId == 'Hold') {
       this.projectData = this.allProjectData.filter(project => project?.status == 'hold');
     } else {
       this.projectData = this.allProjectData.filter(project => project?.status == 'closed');

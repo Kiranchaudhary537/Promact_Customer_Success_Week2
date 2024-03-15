@@ -104,7 +104,7 @@
         <div class="form-group mb-2">
           <label for="manager">Select Manager</label><span> * </span>
           <select id="manager" class="form-control" formControlName="manager">
-            <option *ngFor="let manager of managers" [value]="manager.id">
+            <option *ngFor="let manager of managers" [value]="manager.name">
               {{ manager.name }}
             </option>
           </select>
@@ -122,7 +122,7 @@
     @if(currentStage<3){
     <button type="button" class="btn btn-primary" (click)="nextStage()">Next</button>
     } @if(currentStage==3){
-    <button type="button" class="btn btn-primary" [disabled]="form.invalid || form.pristine">
+    <button type="submit" class="btn btn-primary" (click)="ngSubmit()">
       Save
     </button>
     }

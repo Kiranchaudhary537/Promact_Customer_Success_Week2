@@ -4,6 +4,7 @@ import { SharedModule } from '../shared/shared.module';
 import { RouterOutlet } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProjectService } from '../Services/projectService';
+import { Project } from '../Model/ProjectModel';
 
 @Component({
   standalone: true,
@@ -17,24 +18,25 @@ export class HomeComponent {
   inProgress: boolean;
   currentStage: number = 1;
   clientForm = this.fb.group({
-    clientName: [null, [Validators.required]],
-    clientEmail: [null, [Validators.required, Validators.email]],
+    clientName: ['', [Validators.required]],
+    clientEmail: ['', [Validators.required, Validators.email]],
   });
   managerForm = this.fb.group({
-    manager: [null, [Validators.required]],
+    manager: ['', [Validators.required]],
   });
   managers = [
     { id: 1, name: 'Dipa' },
     { id: 2, name: 'Firoza' },
   ];
   projectForm = this.fb.group({
-    name: [null, [Validators.required]],
-    description: [null, [Validators.required]],
+    name: ['', [Validators.required]],
+    description: ['', [Validators.required]],
   });
 
   constructor(
     private authService: AuthService,
     private config: ConfigStateService,
+    private  projectService:ProjectService,
     private fb: FormBuilder
   ) {
   }
@@ -58,11 +60,26 @@ export class HomeComponent {
   prevStage() {
     this.currentStage--;
   }
-  save() {
+  ngSubmit() {
+    console.log(this.projectForm.value);
+    console.log(this.managerForm.value);
+    console.log(this.clientForm.value);
     if (this.projectForm.invalid) return;
     if (this.currentStage === 1 && this.clientForm.invalid) return;
     if (this.currentStage === 2 && this.managerForm.invalid) return;
     console.log(this.projectForm.value);
-
+    
+    const modalData:Project={
+      name:this.projectForm.value.name,
+      description:this.projectForm.value.description,
+      projectManager:this.managerForm.value.manager,
+      member:"0",
+      status:"inprogress"
+    }
+    this.projectService.createProject(modalData).subscribe
+    ((data)=>{
+      this.isModalOpen = false;
+      console.log(data);
+    })
   }
 }

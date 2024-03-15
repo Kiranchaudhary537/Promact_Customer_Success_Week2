@@ -19,5 +19,7 @@ namespace Promact.CustomerSuccess.Platform.Services.Dtos
         public IEnumerable<ProjectUpdate>? ProjectUpdates { get; set; }
         public IEnumerable<ProjectBudget>? ProjectBudgets { get; set; }
         public IEnumerable<VersionHistory>? versionHistories { get; set; }
+
+        public IEnumerable<Stakeholder>? stakeholders { get; set; }
     }
 }

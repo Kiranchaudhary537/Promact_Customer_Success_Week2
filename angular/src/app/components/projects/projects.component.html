@@ -3,10 +3,10 @@
     <li class="nav-item" role="presentation">
       <a
         class="nav-link"
-        (click)="selectTab('all')"
+        (click)="selectTab('All Progress')"
         role="tab"
         id="allProjectTab"
-        aria-controls="all"
+        aria-controls="All Progress"
         aria-selected="true"
         >All Project</a
       >
@@ -14,10 +14,10 @@
     <li class="nav-item mx-2" role="presentation">
       <a
         class="nav-link"
-        (click)="selectTab('inprogress')"
+        (click)="selectTab('In Progress')"
         role="tab"
         id="inProgressTab"
-        aria-controls="inprogress"
+        aria-controls="In Progress"
         aria-selected="false"
         >In Progress</a
       >
@@ -25,10 +25,10 @@
     <li class="nav-item mx-2" role="presentation">
       <a
         class="nav-link"
-        (click)="selectTab('hold')"
+        (click)="selectTab('Hold')"
         role="tab"
         id="holdTab"
-        aria-controls="hold"
+        aria-controls="Hold"
         aria-selected="false"
         >Hold</a
       >
@@ -36,10 +36,10 @@
     <li class="nav-item mx-2" role="presentation">
       <a
         class="nav-link"
-        (click)="selectTab('closed')"
+        (click)="selectTab('Closed')"
         role="tab"
         id="closeTab"
-        aria-controls="closed"
+        aria-controls="Closed"
         aria-selected="false"
         >Closed</a
       >
@@ -59,7 +59,7 @@
 
 <div>
   <div class="container mt-2">
-    <h3>All projects</h3>
+    <h3>{{selectedTab}}</h3>
     <table class="table">
       <thead>
         <tr>

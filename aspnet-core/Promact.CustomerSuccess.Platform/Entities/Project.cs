@@ -19,6 +19,8 @@ namespace Promact.CustomerSuccess.Platform.Entities
         public virtual ICollection<ProjectUpdate>? ProjectUpdates { get; set; }
         public virtual ICollection<ProjectBudget>? ProjectBudgets { get; set; }
         public virtual ICollection<VersionHistory>? VersionHistories { get; set; }
+        public virtual ICollection<Stakeholder>? Stakeholders { get; set; }
+
         public virtual ICollection<Phase>? Phases
         {
             get; set;

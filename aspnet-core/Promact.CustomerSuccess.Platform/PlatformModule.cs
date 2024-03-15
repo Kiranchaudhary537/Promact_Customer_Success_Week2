@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -98,7 +98,8 @@ namespace Promact.CustomerSuccess.Platform;
     typeof(AbpSettingManagementEntityFrameworkCoreModule),
     typeof(AbpSettingManagementHttpApiModule)
 )]
-public class PlatformModule : AbpModule
+[DependsOn(typeof(AbpEmailingModule))]
+    public class PlatformModule : AbpModule
 {
     /* Single point to enable/disable multi-tenancy */
     private const bool IsMultiTenant = true;
