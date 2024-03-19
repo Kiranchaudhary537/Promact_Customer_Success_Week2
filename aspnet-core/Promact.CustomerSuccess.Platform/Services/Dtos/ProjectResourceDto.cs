@@ -11,7 +11,7 @@ namespace Promact.CustomerSuccess.Platform.Services.Dtos
         public DateTime End { get; set; }
         public required string Role { get; set; }
         public required string Name { get; set; }
-        //public string? Comment { get; set; }
+        public string? Comment { get; set; }
 
 
     }

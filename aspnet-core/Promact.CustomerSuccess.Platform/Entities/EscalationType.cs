@@ -2,8 +2,8 @@
 {
     public enum EscalationType
     {
-        Operational,
-        Financial,
-        Technical
+            Operational,
+            Financial,
+            Technical
     }
 }

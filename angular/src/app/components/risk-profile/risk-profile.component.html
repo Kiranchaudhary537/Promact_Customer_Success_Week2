@@ -21,11 +21,41 @@
           @for(f of getformitems().controls;track f;let i=$index){
           <tr [formGroupName]="i">
             <td>
+              <select class="form-control" id="riskType" formControlName="riskType">
+                <option disabled selected value="">type</option>
+                <option value="Financial">Financial</option>
+                <option value="Operational">Operational</option>
+                <option value="Technical">Technical</option>
+                <option value="HumanResource">HumanResource</option>
+                <option value="External">External</option>
+                <option value="Legal">Legal</option>
+                <option value="Reputational">Reputational</option>
+                <option value="Strategic">Strategic</option>
+              </select>
+            </td>
+            <td>
+              <select class="form-control" id="severity" formControlName="severity">
+                <option disabled selected value="">type</option>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+              </select>
+            </td>
+
+            <td>
+              <select class="form-control" id="impact" formControlName="impact">
+                <option disabled selected value="">type</option>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+              </select>
+            </td>
+            <td>
               <input
                 type="text"
                 class="form-control"
                 id="riskType"
-                formControlName="riskType"
+                formControlName="description"
                 placeholder="Text"
               />
             </td>
@@ -35,16 +65,16 @@
                 class="form-control"
                 id="severity"
                 placeholder="Text"
-                formControlName="severity"
+                formControlName="status"
               />
             </td>
             <td>
               <input
-                type="text"
+                type="text" 
                 class="form-control"
                 id="impact"
-                placeholder="Text"
-                formControlName="impact"
+                placeholder="yyyy-dd-mm"
+                formControlName="closureDate"
               />
             </td>
             <td>

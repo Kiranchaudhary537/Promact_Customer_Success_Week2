@@ -12,9 +12,10 @@ import { GeneratePdfService } from 'src/app/Services/generatePdfService';
 })
 export class ProjectDetailComponent {
   id: string;
-
-  constructor(private generatePdfService:GeneratePdfService,) {
-    
+  projectId: string = '';
+  constructor(private generatePdfService:GeneratePdfService,
+    private route: ActivatedRoute) {
+    this.projectId = this.route.snapshot.pathFromRoot[1].params['id'];
   }
   convertBase64ToPDF(base64String, filename = 'output.pdf'):void {
     const linkSource = `data:application/pdf;base64,${base64String}`;
@@ -24,7 +25,7 @@ export class ProjectDetailComponent {
     downloadLink.click();
   }
   generatePdf():void{
-    this.generatePdfService.getPdf().subscribe((data)=>{
+    this.generatePdfService.getPdf(this.projectId).subscribe((data)=>{
       this.convertBase64ToPDF(data);
     })
   }

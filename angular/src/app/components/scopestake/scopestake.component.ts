@@ -35,7 +35,6 @@ export class ScopeStakeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-   
     this.fetchValues();
   }
 
@@ -58,6 +57,7 @@ export class ScopeStakeComponent implements OnInit {
 
   initializeFrom(e): void {
     this.form = this.fb.group({
+      id: [e?.id],
       stake: [e?.stake, Validators.required],
       scope: [e?.scope, Validators.required],
     });
@@ -65,14 +65,20 @@ export class ScopeStakeComponent implements OnInit {
 
   addNewDataToForm(): void {
     this.form = this.fb.group({
+      id: [''],
       stake: ['', Validators.required],
       scope: ['', Validators.required],
     });
   }
 
   async handleSubmit(modelData: any): Promise<any> {
+    console.log(modelData);
     try {
-      return await this.scopestakeService.createItems(modelData).toPromise();
+      if (modelData.id != '') {
+        return await this.scopestakeService.updateItem(modelData.id,modelData).toPromise();
+      } else {
+        return await this.scopestakeService.createItems(modelData).toPromise();
+      }
     } catch (error) {
       console.error('Error:', error);
     }
@@ -85,6 +91,7 @@ export class ScopeStakeComponent implements OnInit {
     }
     console.log(this.projectId);
     const modelData: any = {
+      id:this.form.value.id,
       projectId: this.projectId,
       scope: this.form.value.scope,
       stake: this.form.value.stake,

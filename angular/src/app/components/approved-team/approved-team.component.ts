@@ -180,5 +180,8 @@ export class ApprovedTeamComponent implements OnInit {
         }
       });
     }
+    else{
+      alert("Make sure you filled right value, check date formate");
+    }
   }
 }

@@ -44,7 +44,7 @@ export class SprintComponent implements OnInit {
     selectedPhase: new FormControl(''),
   });
   unauthorizedPerson: boolean = true;
-  displayedColumns = ['Start Date', 'End Date', 'status', 'Comments','Goals','Sprint Number'];
+  displayedColumns = ['Sprint Number','Start Date', 'End Date', 'status', 'Comments','Goals'];
 
   allPhases: Array<Phase> = [];
   constructor(
@@ -61,7 +61,7 @@ export class SprintComponent implements OnInit {
     this.phaseService.getAllItem().subscribe(
       data => {
         console.log('Projects:', data);
-        this.allPhases = data;
+        this.allPhases = data.filter(item => item?.projectId == this.projectId);
       },
       error => {
         console.error('Error fetching projects:', error);
@@ -70,7 +70,7 @@ export class SprintComponent implements OnInit {
     this.sprintService.getAllItem().subscribe(
       data => {
         console.log('Projects:', data);
-        this.data = data;
+        this.data = data.filter(item => item?.projectId == this.projectId);
       },
       error => {
         if (error.status == 403) {
@@ -116,7 +116,6 @@ export class SprintComponent implements OnInit {
       startDate: ['', [Validators.required, dateFormatValidator()]],
       endDate: ['', [Validators.required, dateFormatValidator()]],
       status: ['', Validators.required],
-      links: ['', Validators.required],
       comments: ['', Validators.required],
       goals: ['', Validators.required],
       sprintNumber: ['', Validators.required],
@@ -130,7 +129,6 @@ export class SprintComponent implements OnInit {
       startDate: [e.startDate, [Validators.required, dateFormatValidator()]],
       endDate: [e.endDate, [Validators.required, dateFormatValidator()]],
       status: [e.status, Validators.required],
-      links: [e.links, Validators.required],
       comments: [e.comments, Validators.required],
       goals: [e.goals, Validators.required],
       sprintNumber: [e.sprintNumber, Validators.required],
@@ -186,6 +184,10 @@ export class SprintComponent implements OnInit {
           console.error('Error:', error);
         }
       });
+    }
+    else{
+      console.log(this.forms.valid);
+      console.log(this.forms.controls)
     }
   }
 }

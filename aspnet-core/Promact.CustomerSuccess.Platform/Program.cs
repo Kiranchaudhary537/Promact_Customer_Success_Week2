@@ -1,13 +1,16 @@
 using Auth0.AspNetCore.Authentication;
 using Autofac.Core;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Microsoft.IdentityModel.Protocols.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Promact.CustomerSuccess.Platform.Data;
 using Serilog;
 using Serilog.Events;
 using System.Security.Claims;
 using Volo.Abp.Data;
+using Microsoft.Net.Http.Headers;
 
 namespace Promact.CustomerSuccess.Platform;
 
@@ -49,36 +52,45 @@ public class Program
                 builder.Services.AddDataMigrationEnvironment();
             }
             await builder.AddApplicationAsync<PlatformModule>();
-            
-            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                          .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
-                          {
-                              options.Authority = $"https://{builder.Configuration["Auth0:Domain"]}";
-                              options.Audience = builder.Configuration["Auth0:Audience"];
-                              options.TokenValidationParameters = new TokenValidationParameters
-                              {
-                                  NameClaimType = ClaimTypes.NameIdentifier,
-                                  ValidateIssuer = true,
-                                  ValidateAudience = true,
-                                  ValidateLifetime = true,
-                                  ValidateIssuerSigningKey = false,
-                                  ValidIssuer = "Auth0",
-                                  ValidAudience = "http://localhost:4200/"
-                              };
-                          })
-                          .AddOpenIdConnect("  ", options =>
-                          {
-                              options.Authority = $"https://{builder.Configuration["Auth0:Domain"]}";
-                              options.ClientId = builder.Configuration["Auth0:ClientId"];
-                              options.ClientSecret = builder.Configuration["Auth0:ClientSecret"];
-                              options.ResponseType = OpenIdConnectResponseType.Code;
-                              options.Scope.Clear();
-                              options.Scope.Add("openid");
-                              options.Scope.Add("profile");
-                              options.SaveTokens = true;
-                              options.CallbackPath = new PathString("/callback");
-                              options.ClaimsIssuer = "Auth0";
-                          });
+            //builder.Services.AddAuthentication(options =>
+            //{
+            //    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            //    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            //}).AddJwtBearer(options =>
+            //{
+            //    options.Authority = "https://dev-p4ib51tdssuj8ngy.us.auth0.com/";
+            //    options.Audience = "https://localhost:44377/";
+            //});
+
+            //builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            //              .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+            //              {
+            //                  options.Authority = $"https://{builder.Configuration["Auth0:Domain"]}";
+            //                  options.Audience = builder.Configuration["Auth0:Audience"];
+            //                  options.TokenValidationParameters = new TokenValidationParameters
+            //                  {
+            //                      NameClaimType = ClaimTypes.NameIdentifier,
+            //                      ValidateIssuer = true,
+            //                      ValidateAudience = true,
+            //                      ValidateLifetime = true,
+            //                      ValidateIssuerSigningKey = false,
+            //                      ValidIssuer = "Auth0",
+            //                      ValidAudience = "http://localhost:4200/"
+            //                  };
+            //              })
+            //              .AddOpenIdConnect("  ", options =>
+            //              {
+            //                  options.Authority = $"https://{builder.Configuration["Auth0:Domain"]}";
+            //                  options.ClientId = builder.Configuration["Auth0:ClientId"];
+            //                  options.ClientSecret = builder.Configuration["Auth0:ClientSecret"];
+            //                  options.ResponseType = OpenIdConnectResponseType.Code;
+            //                  options.Scope.Clear();
+            //                  options.Scope.Add("openid");
+            //                  options.Scope.Add("profile");
+            //                  options.SaveTokens = true;
+            //                  options.CallbackPath = new PathString("/callback");
+            //                  options.ClaimsIssuer = "Auth0";
+            //              });
 
             var app = builder.Build();
             await app.InitializeApplicationAsync();

@@ -23,7 +23,7 @@ import { convertToDate, dateFormatValidator } from 'src/app/utils/dateFormatVali
 })
 export class ProjectResources implements OnInit {
   data: Array<projectResourceModel> = [];
-  projectId: string = ';';
+  projectId: string = '';
   resourcesForms: FormGroup = new FormGroup({
     resourcesitems: new FormGroup({
       name: new FormControl(''),
@@ -31,6 +31,7 @@ export class ProjectResources implements OnInit {
       startDate: new FormControl(''),
       endDate: new FormControl(''),
       allocationPercentage: new FormControl(''),
+      comment: new FormControl(''),
     }),
   });
   unauthorizedPerson: boolean = true;
@@ -48,8 +49,8 @@ export class ProjectResources implements OnInit {
     this.projectResourceService.getAllProjects().subscribe(
       data => {
         console.log('Projects:', data);
-        this.data = data;
-        this.addExistingData(data);
+        this.data = data.filter(item => item?.projectId == this.projectId);
+        this.addExistingData(data.filter(item => item?.projectId == this.projectId));
       },
       error => {
         this.addExistingData([]);
@@ -59,7 +60,6 @@ export class ProjectResources implements OnInit {
           console.warn('Unauthorized access (403):', error);
         } else {
           console.error('Error fetching projects:', error);
-          alert("Error while fetching data");
         }
       }
     );
@@ -84,6 +84,7 @@ export class ProjectResources implements OnInit {
       startDate: ['', [Validators.required,dateFormatValidator()]],
       endDate: ['', [Validators.required,dateFormatValidator()]],
       allocationPercentage: ['', Validators.required],
+      comment:['',Validators.required],
     });
   }
 
@@ -95,6 +96,7 @@ export class ProjectResources implements OnInit {
       startDate: [convertToDate(e.start), [Validators.required,dateFormatValidator()]],
       endDate: [convertToDate(e.end), [Validators.required,dateFormatValidator()]],
       allocationPercentage: [e.allocationPercentage, Validators.required],
+      comment:[e?.comment,Validators.required],
     });
   }
   resourcesitems(): FormArray {
@@ -122,6 +124,7 @@ export class ProjectResources implements OnInit {
   }
 
   onSubmit(): void {
+    
     if (this.resourcesForms.valid) {
       this.resourcesForms.value.resourcesitems.map(e => {
         const modelDate: projectResourceModel = {
@@ -131,11 +134,11 @@ export class ProjectResources implements OnInit {
           start: e.startDate,
           end: e.endDate,
           role: e.role,
+          comment:e.comment
         };
 
         console.log("id ",e.id);
         if (e.id == '') {
-          console.log
           this.projectResourceService.createProject(modelDate).subscribe(
             data => {
               console.log(data);
@@ -155,6 +158,9 @@ export class ProjectResources implements OnInit {
           );
         }
       });
+    }
+    else{
+       alert("Make sure you filled right value, check date formate");
     }
   }
 }

@@ -18,6 +18,9 @@ export interface RiskProfileModel {
   riskType: string;
   severity: string;
   impact: string;
+  closureDate:string;
+  status:string;
+  description:string;
 }
 
 export interface SprintModel {

@@ -16,6 +16,7 @@
           id="phase"
           (ngModelChange)="onSelectedPhaseChange($event)"
         >
+          <option value="" disabled selected>Select Phase</option>
           @for(phase of allPhases;track phase){ @if(phase.projectId==projectId){
           <option class="mt-1 p-1" [value]="phase.id">{{ phase.title }}</option>
           } }
@@ -51,10 +52,15 @@
                     placeholder="Enter Number"
                   />
                 </td>
-                <td>  
-                  <input 
-                  placeholder="Enter Role (Dev)"
-                  type="text" class="form-control" id="role" formControlName="role" /></td>
+                <td>
+                  <input
+                    placeholder="Enter Role (Dev)"
+                    type="text"
+                    class="form-control"
+                    id="role"
+                    formControlName="role"
+                  />
+                </td>
                 <td>
                   <input
                     type="text"

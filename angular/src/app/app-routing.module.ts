@@ -17,6 +17,7 @@ import { AuditHistoryComponent } from './components/audit-history/audit-history.
 import { OverviewComponent } from './components/overview/overview.component';
 import { PhaseComponent } from './components/phase/phase.component';
 import { ScopeStakeComponent } from './components/scopestake/scopestake.component';
+import { ProjectBudgetComponent } from './components/project-budget/project-budget.component';
 
 const routes: Routes = [
   {
@@ -84,6 +85,10 @@ const routes: Routes = [
       {
         path: 'riskprofile',
         component: RiskProfileComponent,
+      },
+      {
+        path: 'budget',
+        component: ProjectBudgetComponent,
       },
       {
         path: 'escalationmatrix',

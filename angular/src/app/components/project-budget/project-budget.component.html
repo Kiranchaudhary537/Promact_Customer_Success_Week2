@@ -21,22 +21,29 @@
           @for(f of getformitems().controls;track f;let i=$index){
           <tr [formGroupName]="i">
             <td>
-              <select class="form-control" id="level" formControlName="level">
+              <select class="form-control" id="type" formControlName="type">
                 <option disabled selected value="">Type</option>
-                <option value="Level1">Level 1</option>
-                <option value="Level2">Level 2</option>
-                <option value="Level3">Level 3</option>
-                <option value="Level4">Level 4</option>
-                <option value="Level5">Level 5</option>
+                <option value="FixedBudget">Fixed Budget</option>
+                <option value="ManMonth">Man Month</option>
               </select>
             </td>
             <td>
-              <select class="form-control" id="escalationType" formControlName="escalationType">
-                <option disabled selected value="">Escalation Type</option>
-                <option value="Operational">Operational</option>
-                <option value="Financial">Financial</option>
-                <option value="Technical">Technical</option>
-              </select>
+              <input
+                type="text"
+                class="form-control"
+                id="durationInMonths"
+                formControlName="durationInMonths"
+                placeholder="Months"
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                class="form-control"
+                id="budgetedHours"
+                formControlName="budgetedHours"
+                placeholder="Budget Hours"
+              />
             </td>
             <td>
               <i class="fs-2 bi-trash-fill danger text-danger" (click)="removeRow(i)"></i>

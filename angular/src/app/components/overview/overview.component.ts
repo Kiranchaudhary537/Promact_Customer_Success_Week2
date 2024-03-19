@@ -53,6 +53,7 @@ export class OverviewComponent implements OnInit {
   addDataToForm(e): void {
     console.log(e.brief);
     this.form = this.fb.group({
+      id: [e?.id],
       brief: [e.brief, Validators.required],
       purpose: [e.purpose, Validators.required],
       goals: [e.goals, Validators.required],
@@ -62,6 +63,7 @@ export class OverviewComponent implements OnInit {
   }
   addNewDataToForm(): void {
     this.form = this.fb.group({
+      id: [''],
       brief: ['', Validators.required],
       purpose: ['', Validators.required],
       goals: ['', Validators.required],
@@ -69,14 +71,37 @@ export class OverviewComponent implements OnInit {
       budget: ['', Validators.required],
     });
   }
+  async handleSubmit(modelData: any): Promise<any> {
+    console.log(modelData);
+    try {
+      if (modelData.id != '') {
+        return await this.overviewService.updateItem(modelData.id,modelData).toPromise();
+      } else {
+        return await this.overviewService.createItem(modelData).toPromise();
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
   onSubmit(): void {
     if (!this.form.valid) {
       alert('Form in not valid');
       return;
     }
-    this.form.value.items.forEach((e)=>{
-      console.log(e);
-    })
     console.log(this.form.value);
+    const modelData: any = {
+      id: this.form.value.id,
+      projectId: this.projectId,
+      brief: this.form.value.brief,
+      purpose: this.form.value.purpose,
+      goals: this.form.value.goals,
+      objectives: this.form.value.objectives,
+      budget: this.form.value.budget,
+    };
+
+    this.handleSubmit(modelData).then(data => {
+      console.log(data);
+    });
   }
 }

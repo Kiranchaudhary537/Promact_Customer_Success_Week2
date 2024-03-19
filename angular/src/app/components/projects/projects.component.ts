@@ -3,14 +3,14 @@ import { RouterLink } from '@angular/router';
 import { ProjectService } from './../../../app/Services/projectService';
 import { Project } from 'src/app/Model/ProjectModel';
 import { AuthService } from '@abp/ng.core';
-import { GeneratePdfService } from 'src/app/Services/generatePdfService';
+import { DatePipe } from '@angular/common';
 
 @Component({
   standalone: true,
   selector: 'all-project-route',
   templateUrl: './projects.component.html',
   styleUrls: ['./projects.component.scss'],
-  imports: [RouterLink],
+  imports: [RouterLink, DatePipe],
 })
 export class ProjectsComponent implements OnInit {
   //variable
@@ -26,10 +26,13 @@ export class ProjectsComponent implements OnInit {
     this.authService.navigateToLogin();
   }
 
+  filterData(status:string):any{
+    return this.allProjectData.filter(project => project?.status == status);
+  }
   selectTab(tabId: string): void {
     this.selectedTab = tabId;
     if (tabId == 'All Progress') {
-      console.log(this.allProjectData)
+      console.log(this.allProjectData);
       this.projectData = this.allProjectData;
     } else if (tabId == 'In Progress') {
       this.projectData = this.allProjectData.filter(project => project?.status == 'inprogress');

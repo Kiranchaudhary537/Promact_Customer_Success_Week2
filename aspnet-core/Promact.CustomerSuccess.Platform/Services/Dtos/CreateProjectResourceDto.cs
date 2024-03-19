@@ -9,6 +9,6 @@
         public required string Role { get; set; }
 
         public required string Name { get; set; }
-        //public string? Comment { get; set; }
+        public string? Comment { get; set; }
     }
 }

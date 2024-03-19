@@ -49,8 +49,8 @@ export class ProjectUpdatesComponent implements OnInit {
     this.projectUpdateService.getAllItem().subscribe(
       data => {
         console.log('Projects:', data);
-        this.data = data;
-        this.addExistingData(data);
+        this.data = data.filter(item => item?.projectId == this.projectId);
+        this.addExistingData(data.filter(item => item?.projectId == this.projectId));
       },
       error => {
         this.addExistingData([]);

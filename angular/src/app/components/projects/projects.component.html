@@ -1,94 +1,130 @@
 <div class="container">
-  <ul class="nav nav-tabs my-3 gap-2 flex-row overflow-hidden" id="ex1" role="tablist">
-    <li class="nav-item" role="presentation">
-      <a
-        class="nav-link"
-        (click)="selectTab('All Progress')"
-        role="tab"
-        id="allProjectTab"
-        aria-controls="All Progress"
-        aria-selected="true"
-        >All Project</a
-      >
-    </li>
-    <li class="nav-item mx-2" role="presentation">
-      <a
-        class="nav-link"
-        (click)="selectTab('In Progress')"
-        role="tab"
-        id="inProgressTab"
-        aria-controls="In Progress"
-        aria-selected="false"
-        >In Progress</a
-      >
-    </li>
-    <li class="nav-item mx-2" role="presentation">
-      <a
-        class="nav-link"
-        (click)="selectTab('Hold')"
-        role="tab"
-        id="holdTab"
-        aria-controls="Hold"
-        aria-selected="false"
-        >Hold</a
-      >
-    </li>
-    <li class="nav-item mx-2" role="presentation">
-      <a
-        class="nav-link"
-        (click)="selectTab('Closed')"
-        role="tab"
-        id="closeTab"
-        aria-controls="Closed"
-        aria-selected="false"
-        >Closed</a
-      >
-    </li>
-  </ul>
-</div>
-
-@if(hasLoggedIn==false){
-<div class="container mt-5">
-  <h3 class="text-center m-1">You are not logged in</h3>
-  <p>Use username:admin and password:1q2w3E*</p>
-  <div class="col-md-12 text-center">
-    <button type="button" class="btn btn-primary btn-lg m-auto" (click)="login()">Login</button>
+  <div class="row">
+    <div class="col-md-3">
+      <div class="card p-3 mb-2">
+        <h3 class="heading text-center">{{ allProjectData.length }}</h3>
+        <span class="text1 text-center">All Projects</span>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card p-3 mb-2">
+        <h3 class="heading text-center ">{{ filterData('inprogress').length }}</h3>
+          <span class="text1 text-center">In Progress</span>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card p-3 mb-2">
+        <h3 class="heading text-center">{{ filterData('hold').length }}</h3>
+          <span class="text1 text-center">Hold</span>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card p-3 mb-2">
+        <h3 class="heading text-center">{{ filterData('closed').length }}</h3>
+          <span class="text1 text-center">Closed</span>
+      </div>
+    </div>
   </div>
-</div>
-} @if(hasLoggedIn==true){
-
-<div>
-  <div class="container mt-2">
-    <h3>{{selectedTab}}</h3>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Project Name</th>
-          <th>Started</th>
-          <th>Status</th>
-          <th>Project Manager</th>
-          <th>Members</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for(project of projectData;track project){
-        <tr>
-          <td>
-            <a
-              routerLink="/projects/{{ project.id }}"
-              routerLinkActive="active"
-              ariaCurrentWhenActive="page"
-              >{{ project.name }}</a
-            >
-          </td>
-          <td><span class="">{{project?.creationTime}}</span></td>
-          <td><span class="badge bg-success">{{ project.status }}</span></td>
-          <td><span class="text-dark">{{ project.projectManager }}</span></td>
-          <td><span class="badge bg-primary text-dark">{{ project.member }}</span></td>
-        </tr>
-        }
-      </tbody>
-    </table>
+  <div>
+    <ul class="nav nav-tabs my-3 gap-2 flex-row overflow-hidden" id="ex1" role="tablist">
+      <li class="nav-item" role="presentation">
+        <a
+          class="nav-link"
+          (click)="selectTab('All Progress')"
+          role="tab"
+          id="allProjectTab"
+          aria-controls="All Progress"
+          aria-selected="true"
+          >All Project</a
+        >
+      </li>
+      <li class="nav-item mx-2" role="presentation">
+        <a
+          class="nav-link"
+          (click)="selectTab('In Progress')"
+          role="tab"
+          id="inProgressTab"
+          aria-controls="In Progress"
+          aria-selected="false"
+          >In Progress</a
+        >
+      </li>
+      <li class="nav-item mx-2" role="presentation">
+        <a
+          class="nav-link"
+          (click)="selectTab('Hold')"
+          role="tab"
+          id="holdTab"
+          aria-controls="Hold"
+          aria-selected="false"
+          >Hold</a
+        >
+      </li>
+      <li class="nav-item mx-2" role="presentation">
+        <a
+          class="nav-link"
+          (click)="selectTab('Closed')"
+          role="tab"
+          id="closeTab"
+          aria-controls="Closed"
+          aria-selected="false"
+          >Closed</a
+        >
+      </li>
+    </ul>
   </div>
+
+  @if(hasLoggedIn==false){
+  <div class="container mt-5">
+    <h3 class="text-center m-1">You are not logged in</h3>
+    <p>Use username:admin and password:1q2w3E*</p>
+    <div class="col-md-12 text-center">
+      <button type="button" class="btn btn-primary btn-lg m-auto" (click)="login()">Login</button>
+    </div>
+  </div>
+  } @if(hasLoggedIn==true){
+
+  <div>
+    <div class="container mt-2">
+      <h3>{{ selectedTab }}</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Project Name</th>
+            <th>Started</th>
+            <th>Status</th>
+            <th>Project Manager</th>
+            <th>Members</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for(project of projectData;track project){
+          <tr>
+            <td>
+              <a
+                routerLink="/projects/{{ project.id }}"
+                routerLinkActive="active"
+                ariaCurrentWhenActive="page"
+                >{{ project.name }}</a
+              >
+            </td>
+            <td>
+              <span class="">{{ project?.creationTime | date }}</span>
+            </td>
+            <td>
+              <span class="badge bg-success">{{ project.status }}</span>
+            </td>
+            <td>
+              <span class="text-dark">{{ project.projectManager }}</span>
+            </td>
+            <td>
+              <span class="badge bg-primary text-dark">{{ project.member }}</span>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+  }
 </div>
-}

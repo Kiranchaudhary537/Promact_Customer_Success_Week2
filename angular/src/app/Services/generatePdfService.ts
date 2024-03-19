@@ -12,7 +12,7 @@ export class GeneratePdfService {
     this.baseUrl = apiEndPoint();
   }
 
-  getPdf(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}create-pdf`);
-  }
+  getPdf(id:any): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}create-pdf/${id}/by-id`);
+  } 
 }

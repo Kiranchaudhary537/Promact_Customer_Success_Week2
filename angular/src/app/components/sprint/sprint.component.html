@@ -1,112 +1,118 @@
 @if (unauthorizedPerson==false) {
-  <div>
-    <div class="container mt-5">
-      <h3 class="text-center m-1">You are not authorized to view this table.</h3>
-    </div>
+<div>
+  <div class="container mt-5">
+    <h3 class="text-center m-1">You are not authorized to view this table.</h3>
   </div>
-  } @if (unauthorizedPerson==true) {
-  <div>
-    <div class="container mt-2 mb-2">
-      <h2>Select Phase</h2>
-      <form [formGroup]="phaseForm" (ngSubmit)="onSubmit()">
-        <div class="form-group">
-          <select
-            class="form-control form-select-lg"
-            formControlName="selectedPhase"
-            id="phase"
-            (ngModelChange)="onSelectedPhaseChange($event)"
-          >
-            @for(phase of allPhases;track phase){ @if(phase.projectId==projectId){
-            <option class="mt-1 p-1" [value]="phase.id">{{ phase.title }}</option>
-            } }
-          </select>
-          @if(phaseForm.get('selectedPhase').invalid && (phaseForm.get('selectedPhase').dirty ||
-          phaseForm.get('selectedPhase').touched)){
-          <div class="text-danger">Please select a phase.</div>
-          }
-        </div>
-      </form>
-      @if(phaseForm.get('selectedPhase').invalid==false){
-      <div class="mx-2 mb-2 mt-2">
-        <button type="submit" class="btn btn-outline-success" (click)="addRow()">Add Row</button>
-        <form [formGroup]="forms" (ngSubmit)="onSubmit()">
-          <div formArrayName="formitem">
-            <table class="table">
-              <thead>
-                <tr>
-                  @for(colums of displayedColumns;track colums){
-                  <th>{{ colums }}</th>
-                  }
-                </tr>
-              </thead>
-              <tbody>
-                @for(f of getformitems().controls;track f;let i=$index){
-                <tr [formGroupName]="i">
-                  <td>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="startDate"
-                      formControlName="startDate"
-                      placeholder="yyyy-mm-dd"
-                    />
-                  </td>
-                  <td>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="endDate"
-                      formControlName="endDate"
-                      placeholder="yyyy-mm-dd"
-                    />
-                  </td>
-                  <td>  
-                    <input 
-                    placeholder="Enter Role (Dev)"
-                    type="text" class="form-control" 
-                    placeholder="text"
-                    id="status" formControlName="status" /></td>
-                  <td>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="comments"
-                      formControlName="comments"
-                      placeholder="Text"
-                    />
-                  </td>
-                  <td>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="goals"
-                      formControlName="goals"
-                      placeholder="Text"
-                    />
-                  </td>
-                  <td>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="sprintNumber"
-                      formControlName="sprintNumber"
-                      placeholder="Enter number"
-                    />
-                  </td>
-                  <td>
-                    <i class="fs-2 bi-trash-fill danger text-danger" (click)="removeRow(i)"></i>
-                  </td>
-                </tr>
-                }
-              </tbody>
-            </table>
-          </div>
-          <button type="submit" class="btn btn-success">Submit</button>
-        </form>
-        <p class="border-b mt-1 mb-1"></p>
+</div>
+} @if (unauthorizedPerson==true) {
+<div>
+  <div class="container mt-2 mb-2">
+    <h2>Select Phase</h2>
+    <form [formGroup]="phaseForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <select
+          class="form-control form-select-lg"
+          formControlName="selectedPhase"
+          id="phase"
+          (ngModelChange)="onSelectedPhaseChange($event)"
+        >
+          <option value="" disabled selected>Select Phase</option>
+          @for(phase of allPhases;track phase){ @if(phase.projectId==projectId){
+          <option class="mt-1 p-1" [value]="phase.id">{{ phase.title }}</option>
+          } }
+        </select>
+        @if(phaseForm.get('selectedPhase').invalid && (phaseForm.get('selectedPhase').dirty ||
+        phaseForm.get('selectedPhase').touched)){
+        <div class="text-danger">Please select a phase.</div>
+        }
       </div>
-      }
+    </form>
+    @if(phaseForm.get('selectedPhase').invalid==false){
+    <div class="mx-2 mb-2 mt-2">
+      <button type="submit" class="btn btn-outline-success" (click)="addRow()">Add Row</button>
+      <form [formGroup]="forms" (ngSubmit)="onSubmit()">
+        <div formArrayName="formitem">
+          <table class="table">
+            <thead>
+              <tr>
+                @for(colums of displayedColumns;track colums){
+                <th>{{ colums }}</th>
+                }
+              </tr>
+            </thead>
+            <tbody>
+              @for(f of getformitems().controls;track f;let i=$index){
+              <tr [formGroupName]="i">
+                <td>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="sprintNumber"
+                    formControlName="sprintNumber"
+                    placeholder="Enter number"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="startDate"
+                    formControlName="startDate"
+                    placeholder="yyyy-mm-dd"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="endDate"
+                    formControlName="endDate"
+                    placeholder="yyyy-mm-dd"
+                  />
+                </td>
+
+                <td>
+                  <select class="form-control" id="status" formControlName="status">
+                    <option disabled selected value="">Status</option>
+                    <option value="InProgress">In Progress</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Delayed">Delayed</option>
+                    <option value="OnTrack">On Track</option>
+                    <option value="SignOffPending">Sign Off Pending</option>
+                  </select>
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="comments"
+                    formControlName="comments"
+                    placeholder="Text"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="goals"
+                    formControlName="goals"
+                    placeholder="Text"
+                  />
+                </td>
+
+                <td>
+                  <i class="fs-2 bi-trash-fill danger text-danger" (click)="removeRow(i)"></i>
+                </td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+        <button type="submit" class="btn btn-success">Submit</button>
+      </form>
+      <p class="border-b mt-1 mb-1"></p>
     </div>
+    }
   </div>
-  }
-  
+</div>
+}

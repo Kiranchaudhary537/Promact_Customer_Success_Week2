@@ -10,10 +10,9 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { EscalationMatrixModel } from 'src/app/Model/Models';
 import { MeetingMinute } from 'src/app/Model/MomModel';
-import { MomService } from 'src/app/Services/momService';
-import { convertToDate, dateFormatValidator } from 'src/app/utils/dateFormatValidator';
-
+import { EscalationMatrixService } from 'src/app/Services/escalationMatrixService';
 @Component({
   standalone: true,
   selector: 'project-route',
@@ -33,22 +32,23 @@ export class EscalationMatrixComponent implements OnInit {
     }),
   });
   unauthorizedPerson: boolean = true;
-  displayedColumns = ['Date', 'Duration', 'MoM Link', 'Comments'];
-
+  displayedColumns = ['Level', 'EscalationType'];
+  levelType = ['Level1', 'Level2', 'Level3', 'Level4', 'Level5'];
+  escalationType = ['Operational', 'Financial', 'Technical'];
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private meetingMinuteService: MomService
+    private escalationMatrixService: EscalationMatrixService
   ) {
     this.projectId = this.route.snapshot.pathFromRoot[1].params['id'];
   }
 
   ngOnInit(): void {
-    this.meetingMinuteService.getAllItem().subscribe(
+    this.escalationMatrixService.getAllItem().subscribe(
       data => {
         console.log('Projects:', data);
-        this.data = data;
-        this.addExistingData(data);
+        this.data = data.filter(item => item?.projectId == this.projectId);
+        this.addExistingData(data.filter(item => item?.projectId == this.projectId));
       },
       error => {
         this.addExistingData([]);
@@ -77,21 +77,16 @@ export class EscalationMatrixComponent implements OnInit {
   createFormGroup(): FormGroup {
     return this.fb.group({
       id: [''],
-      date: ['', [Validators.required, dateFormatValidator()]],
-      duration: ['', Validators.required],
-      links: ['', Validators.required],
-      comments: ['', Validators.required],
+      level: ['', Validators.required],
+      escalationType: ['', Validators.required],
     });
   }
 
   existingDataFormGroup(e: any): FormGroup {
     return this.fb.group({
       id: [e.id],
-      date: [convertToDate(e.meetingDate), [Validators.required, dateFormatValidator()]],
-
-      duration: [e.duration, Validators.required],
-      links: [e.moMLink, Validators.required],
-      comments: [e.comments, Validators.required],
+      level: [this.levelType[e.level], Validators.required],
+      escalationType: [this.escalationType[e.escalationType], Validators.required],
     });
   }
 
@@ -107,7 +102,7 @@ export class EscalationMatrixComponent implements OnInit {
   removeRow(index: number): void {
     const approveteamArray = this.forms.get('formitem') as FormArray;
     const controlAtIndex = approveteamArray.at(index);
-    this.meetingMinuteService.deleteItem(controlAtIndex.value.id).subscribe(
+    this.escalationMatrixService.deleteItem(controlAtIndex.value.id).subscribe(
       data => {
         console.log(data);
       },
@@ -122,25 +117,25 @@ export class EscalationMatrixComponent implements OnInit {
     if (this.forms.valid) {
       this.forms.value.formitem.forEach(async e => {
         try {
-          const modelDate: MeetingMinute = {
+          const modelDate: EscalationMatrixModel = {
             projectId: this.projectId,
-            duration: e.duration,
-            meetingDate: e.date,
-            moMLink: e.links,
-            comments: e.comments,
+            level: e.level,
+            escalationType: e.escalationType,
           };
           console.log(e);
           if (e.id != '') {
-            const data = await this.meetingMinuteService.updateItem(e.id, modelDate).toPromise();
+            const data = await this.escalationMatrixService.updateItem(e.id, modelDate).toPromise();
             console.log(data);
           } else {
-            const data = await this.meetingMinuteService.createItem(modelDate).toPromise();
+            const data = await this.escalationMatrixService.createItem(modelDate).toPromise();
             console.log(data);
           }
         } catch (error) {
           console.error('Error:', error);
         }
       });
+    } else {
+      alert('Make sure you filled right value');
     }
   }
 }

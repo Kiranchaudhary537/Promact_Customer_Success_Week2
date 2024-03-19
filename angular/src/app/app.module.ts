@@ -17,10 +17,18 @@ import { AbpOAuthModule } from '@abp/ng.oauth';
 import { ThemeLeptonXModule } from '@abp/ng.theme.lepton-x';
 import { SideMenuLayoutModule } from '@abp/ng.theme.lepton-x/layouts';
 import { AccountLayoutModule } from '@abp/ng.theme.lepton-x/account';
+import { AuthModule } from '@auth0/auth0-angular';
 
 @NgModule({
   imports: [
     BrowserModule,
+    // AuthModule.forRoot({
+    //   domain: 'dev-p4ib51tdssuj8ngy.us.auth0.com',
+    //   clientId: 'hAGf8ohT9UrMcPIJtl93ml1YfF0WMtke',
+    //   authorizationParams: {
+    //     redirect_uri: window.location.origin
+    //   }
+    // }),
     BrowserAnimationsModule,
     AppRoutingModule,
     CoreModule.forRoot({
@@ -39,6 +47,7 @@ import { AccountLayoutModule } from '@abp/ng.theme.lepton-x/account';
               ThemeLeptonXModule.forRoot(),
               SideMenuLayoutModule.forRoot(),
               AccountLayoutModule.forRoot(),
+              
   ],
   declarations: [AppComponent],
   providers: [APP_ROUTE_PROVIDER],

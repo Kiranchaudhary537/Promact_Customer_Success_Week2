@@ -55,8 +55,8 @@ export class ClientFeedbackComponent implements OnInit {
     this.clientFeedbackService.getAllItem().subscribe(
       data => {
         console.log('Projects:', data);
-        this.data = data;
-        this.addExistingData(data);
+        this.data =  data.filter(item => item?.projectId == this.projectId);
+        this.addExistingData(data.filter(item => item?.projectId == this.projectId));
       },
       error => {
         this.addExistingData([]);
@@ -151,6 +151,9 @@ export class ClientFeedbackComponent implements OnInit {
           console.error('Error:', error);
         }
       });
+    }
+    else{
+      alert("Make sure you filled right value, check date formate");
     }
   }
 }

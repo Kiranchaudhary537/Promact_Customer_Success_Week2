@@ -35,7 +35,7 @@ export class StakeholderComponent implements OnInit {
   });
   unauthorizedPerson: boolean = true;
   displayedColumns = ['Title', 'Name', 'Email'];
-
+  stakeholderType = ['ProjectManager', 'Client', 'AccountManager', 'Admin'];
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
@@ -48,8 +48,8 @@ export class StakeholderComponent implements OnInit {
     this.stakeholderService.getAllItem().subscribe(
       data => {
         console.log('Projects:', data);
-        this.data = data;
-        this.addExistingData(data);
+        this.data = data.filter(item => item?.projectId == this.projectId);
+        this.addExistingData(data.filter(item => item?.projectId == this.projectId));
       },
       error => {
         this.addExistingData([]);
@@ -87,7 +87,7 @@ export class StakeholderComponent implements OnInit {
   existingDataFormGroup(e: any): FormGroup {
     return this.fb.group({
       id: [e.id],
-      title: [e.title, Validators.required],
+      title: [this.stakeholderType[e.title], Validators.required],
       name: [e.name, Validators.required],
       contactEmail: [e.contactEmail, [Validators.required, Validators.email]],
     });

@@ -37,7 +37,14 @@ export class AuditHistoryComponent implements OnInit {
     }),
   });
   unauthorizedPerson: boolean = true;
-  displayedColumns = ['Date Of Audit', 'Reviewed By', 'Status', 'Section','Comment Queries','Action Item'];
+  displayedColumns = [
+    'Date Of Audit',
+    'Reviewed By',
+    'Status',
+    'Section',
+    'Comment Queries',
+    'Action Item',
+  ];
 
   constructor(
     private fb: FormBuilder,
@@ -51,8 +58,8 @@ export class AuditHistoryComponent implements OnInit {
     this.auditHistoryService.getAllItem().subscribe(
       data => {
         console.log('audit:', data);
-        this.data = data;
-        this.addExistingData(data);
+        this.data = data.filter(item => item?.projectId == this.projectId);
+        this.addExistingData(data.filter(item => item?.projectId == this.projectId));
       },
       error => {
         this.addExistingData([]);
@@ -150,6 +157,9 @@ export class AuditHistoryComponent implements OnInit {
           console.error('Error:', error);
         }
       });
+    }
+    else{
+      alert("Make sure you filled right value, check date formate");
     }
   }
 }

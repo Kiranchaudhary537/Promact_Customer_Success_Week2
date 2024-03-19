@@ -31,12 +31,17 @@ export class RiskProfileComponent implements OnInit {
     formitem: new FormGroup({
       riskType: new FormControl(''),
       severity: new FormControl(''),
-      impact: new FormControl('')
+      impact: new FormControl(''),
+      description: new FormControl(''),
+      status: new FormControl(''),
+      closureDate: new FormControl('')
     }),
   });
   unauthorizedPerson: boolean = true;
-  displayedColumns = ['RiskType', 'Severity', 'Impact'];
-
+  displayedColumns = ['RiskType', 'Severity', 'Impact',"Description","Status","Closure Date"];
+  riskType = ['Financial', 'Operational', 'Technical', 'HumanResource',
+  'External', 'Legal', 'Reputational', 'Strategic'];
+  impactType = ['Low', 'Medium', 'High'];
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
@@ -49,8 +54,8 @@ export class RiskProfileComponent implements OnInit {
     this.riskProfileService.getAllItem().subscribe(
       data => {
         console.log('Projects:', data);
-        this.data = data;
-        this.addExistingData(data);
+        this.data = data.filter(item => item?.projectId == this.projectId);
+        this.addExistingData(data.filter(item => item?.projectId == this.projectId));
       },
       error => {
         this.addExistingData([]);
@@ -82,16 +87,22 @@ export class RiskProfileComponent implements OnInit {
       id: [''],
       riskType: ['', Validators.required],
       severity: ['', Validators.required],
-      impact: ['', Validators.required]
+      impact: ['', Validators.required],
+      description: ['', Validators.required],
+      status: ['', Validators.required],
+      closureDate: ['',[Validators.required,dateFormatValidator()]]
     });
   }
 
   existingDataFormGroup(e: any): FormGroup {
     return this.fb.group({
       id: [e.id],
-      riskType: [e.riskType, Validators.required],
-      severity: [e.severity, Validators.required],
-      impact: [e.impact, Validators.required],
+      riskType: [this.riskType[e.riskType], Validators.required],
+      severity: [this.impactType[e.severity], Validators.required],
+      impact: [this.impactType[e.impact], Validators.required],
+      description: [e.description, Validators.required],
+      status: [e.status, Validators.required],
+      closureDate: [convertToDate(e.closureDate), [Validators.required,dateFormatValidator()]],
     });
   }
 
@@ -127,6 +138,9 @@ export class RiskProfileComponent implements OnInit {
             riskType: e.riskType,
             severity: e.severity,
             impact: e.impact,
+            description:e.description,
+            status:e.status,
+            closureDate:e.closureDate
           };
           console.log(e);
           if (e.id != '') {

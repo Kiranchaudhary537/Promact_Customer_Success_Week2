@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Entities.Auditing;
 
 namespace Promact.CustomerSuccess.Platform.Entities
 {
-    public class Sprint : AuditedAggregateRootWithUser<Guid, ApplicationUser>
+    public class Sprint : Entity<Guid>
     {
         [ForeignKey("Phase")]
         public Guid PhaseId { get; set; }

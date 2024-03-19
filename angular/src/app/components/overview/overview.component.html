@@ -6,7 +6,7 @@
       class="form-control"
       formControlName="brief"
       placeholder="Project Brief"
-      [readonly]="form.get('brief').value != ''"
+      [value]="form.get('brief').value"
     ></textarea>
   </div>
   <div class="form-group">
@@ -16,7 +16,6 @@
       class="form-control"
       formControlName="purpose"
       placeholder="Purpose"
-      [readOnly]="form.get('purpose').value != ''"
     ></textarea>
   </div>
   <div class="form-group">
@@ -26,7 +25,6 @@
       class="form-control"
       formControlName="goals"
       placeholder="Goals"
-      [readOnly]="form.get('purpose').value != ''"
     ></textarea>
   </div>
   <div class="form-group">
@@ -36,7 +34,6 @@
       class="form-control"
       formControlName="objectives"
       placeholder="Objectives"
-      [readOnly]="form.get('objectives').value != ''"
     ></textarea>
   </div>
   <div class="form-group">
@@ -46,7 +43,6 @@
       class="form-control"
       formControlName="budget"
       placeholder="Budget"
-      [readOnly]="form.get('budget').value != ''"
     ></textarea>
   </div>
   <button type="submit" class="m-2 btn btn-primary" [disabled]="form.invalid">Save</button>

@@ -10,18 +10,17 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { EscalationMatrixModel } from 'src/app/Model/Models';
 import { MeetingMinute } from 'src/app/Model/MomModel';
-import { MomService } from 'src/app/Services/momService';
-import { convertToDate, dateFormatValidator } from 'src/app/utils/dateFormatValidator';
-
+import { ProjectBudgetService } from 'src/app/Services/projectBudgetServer';
 @Component({
   standalone: true,
   selector: 'project-route',
-  templateUrl: './moms.component.html',
-  styleUrls: ['./moms.component.scss'],
+  templateUrl: './project-budget.component.html',
+  styleUrls: ['./project-budget.component.scss'],
   imports: [RouterLink, ReactiveFormsModule],
 })
-export class MomsComponent implements OnInit {
+export class ProjectBudgetComponent implements OnInit {
   data: Array<MeetingMinute> = [];
   projectId: string = '';
   forms: FormGroup = new FormGroup({
@@ -33,18 +32,18 @@ export class MomsComponent implements OnInit {
     }),
   });
   unauthorizedPerson: boolean = true;
-  displayedColumns = ['Date', 'Duration', 'MoM Link', 'Comments'];
-
+  displayedColumns = ['Project Type', 'Duration In Months','Budgeted Hours'];
+  levelType = ['FixedBudget', 'ManMonth'];
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private meetingMinuteService: MomService
+    private projectBudgetService: ProjectBudgetService
   ) {
     this.projectId = this.route.snapshot.pathFromRoot[1].params['id'];
   }
 
   ngOnInit(): void {
-    this.meetingMinuteService.getAllItem().subscribe(
+    this.projectBudgetService.getItems().subscribe(
       data => {
         console.log('Projects:', data);
         this.data = data.filter(item => item?.projectId == this.projectId);
@@ -77,21 +76,18 @@ export class MomsComponent implements OnInit {
   createFormGroup(): FormGroup {
     return this.fb.group({
       id: [''],
-      date: ['', [Validators.required, dateFormatValidator()]],
-      duration: ['', Validators.required],
-      links: ['', Validators.required],
-      comments: ['', Validators.required],
+      type: ['', Validators.required],
+      durationInMonths: ['', Validators.required],
+      budgetedHours: ['', Validators.required],
     });
   }
 
   existingDataFormGroup(e: any): FormGroup {
     return this.fb.group({
       id: [e.id],
-      date: [convertToDate(e.meetingDate), [Validators.required, dateFormatValidator()]],
-
-      duration: [e.duration, Validators.required],
-      links: [e.moMLink, Validators.required],
-      comments: [e.comments, Validators.required],
+      type: [this.levelType[e.level], Validators.required],
+      durationInMonths: [e.durationInMonths, Validators.required],
+      budgetedHours: [e.budgetedHours, Validators.required],
     });
   }
 
@@ -107,7 +103,7 @@ export class MomsComponent implements OnInit {
   removeRow(index: number): void {
     const approveteamArray = this.forms.get('formitem') as FormArray;
     const controlAtIndex = approveteamArray.at(index);
-    this.meetingMinuteService.deleteItem(controlAtIndex.value.id).subscribe(
+    this.projectBudgetService.deleteItem(controlAtIndex.value.id).subscribe(
       data => {
         console.log(data);
       },
@@ -122,28 +118,25 @@ export class MomsComponent implements OnInit {
     if (this.forms.valid) {
       this.forms.value.formitem.forEach(async e => {
         try {
-          const modelDate: MeetingMinute = {
+          const modelDate: EscalationMatrixModel = {
             projectId: this.projectId,
-            duration: e.duration,
-            meetingDate: e.date,
-            moMLink: e.links,
-            comments: e.comments,
+            level: e.level,
+            escalationType: e.escalationType,
           };
           console.log(e);
           if (e.id != '') {
-            const data = await this.meetingMinuteService.updateItem(e.id, modelDate).toPromise();
+            const data = await this.projectBudgetService.updateItem(e.id, modelDate).toPromise();
             console.log(data);
           } else {
-            const data = await this.meetingMinuteService.createItem(modelDate).toPromise();
+            const data = await this.projectBudgetService.createItem(modelDate).toPromise();
             console.log(data);
           }
         } catch (error) {
           console.error('Error:', error);
         }
       });
-    }
-    else{
-      alert("Make sure you filled right value, check date formate");
+    } else {
+      alert('Make sure you filled right value');
     }
   }
 }
