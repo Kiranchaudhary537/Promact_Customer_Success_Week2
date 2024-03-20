@@ -1,23 +1,31 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterOutlet } from '@angular/router';
 import { ProjectService } from './../../../app/Services/projectService';
 import { Project } from 'src/app/Model/ProjectModel';
 import { AuthService } from '@abp/ng.core';
 import { DatePipe } from '@angular/common';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   standalone: true,
   selector: 'all-project-route',
   templateUrl: './projects.component.html',
   styleUrls: ['./projects.component.scss'],
-  imports: [RouterLink, DatePipe],
+  imports: [SharedModule,RouterLink, DatePipe,RouterOutlet],
 })
 export class ProjectsComponent implements OnInit {
   //variable
+  isModalOpen:boolean=false;
   allProjectData: Array<Project> = [];
   projectData: Array<Project> = [];
   selectedTab: string = 'All Progress';
-  constructor(private projectService: ProjectService, private authService: AuthService) {}
+  selectedProject:any;
+  projectForm = this.fb.group({
+    status: ['', Validators.required],
+    member: ['', Validators.required],
+  });
+  constructor(private fb:FormBuilder, private projectService: ProjectService, private authService: AuthService) {}
   get hasLoggedIn(): boolean {
     return this.authService.isAuthenticated;
   }
@@ -44,6 +52,37 @@ export class ProjectsComponent implements OnInit {
     console.log(this.projectData);
   }
 
+  handleEdit(id):void{
+      this.isModalOpen=true;
+      this.selectedProject=this.allProjectData.filter(project => project.id==id)[0];
+      this.projectForm.patchValue({
+        status: this.selectedProject.status,
+        member: this.selectedProject.member
+      });
+      
+      console.log(this.selectedProject);
+  }
+
+  handleUpdateProject():void{
+    console.log("working");
+    this.projectService.updateProject(this.selectedProject.id,{
+      name:this.selectedProject.name,
+      description:this.selectedProject.description,
+      projectManager:this.selectedProject.projectManager,
+      status:this.projectForm.value.status,
+      member:this.projectForm.value.member.toString()
+    }).subscribe((d)=>{
+      this.isModalOpen=false;
+    },
+    (error)=>{
+      alert("Error while delete");
+    })
+  }
+  handleDelete(id):void{
+    this.projectService.deleteProject(id).subscribe((d)=>{
+      this.allProjectData=this.allProjectData.filter(item=>item.id=id);
+    });
+  }
   ngOnInit(): void {
     this.projectService.getAllProjects().subscribe(
       data => {
@@ -57,3 +96,4 @@ export class ProjectsComponent implements OnInit {
     );
   }
 }
+

@@ -1,0 +1,45 @@
+<nav class="navbar navbar-expand-lg bg-white border">
+  <div class="container-fluid">
+    <div class="d-flex flex-grow-1">
+      <!-- This will make the content flex to fill the available space -->
+      <a class="h1 navbar-brand text-primary text-bold" href="/">Customer Success</a>
+      <div class="d-flex align-items-center">
+        <!-- This will align the content vertically centered -->
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item" *ngIf="currentUser.roles[0] == 'admin'">
+            <a class="nav-link" routerLink="/identity/roles">Manage Roles</a>
+          </li>
+          <li class="nav-item" *ngIf="currentUser.roles[0] == 'admin'">
+            <a class="nav-link" routerLink="/identity/users">Manage Users</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+      <div *ngIf="hasLoggedIn" class="text btn btn-dark mx-2" routerLink="account/manage">
+        {{ currentUser.userName }}
+      </div>
+      <button
+        *ngIf="hasLoggedIn"
+        class="btn btn-outline-primary"
+        (click)="handleLogout()"
+        type="button"
+      >
+        Logout
+      </button>
+      <button
+        *ngIf="!hasLoggedIn"
+        class="btn btn-outline-primary"
+        (click)="handleLogin()"
+        type="button"
+      >
+        Login
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="">
+  <router-outlet></router-outlet>
+</div>

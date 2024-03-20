@@ -12,10 +12,6 @@ public class PlatformAutoMapperProfile : Profile
         CreateMap<UpdateProjectDto, Project>();
         CreateMap<Project, ProjectDto>().ReverseMap();
 
-        CreateMap<CreateTodoItemDto, TodoItem>();
-        CreateMap<UpdateTodoItemDto, TodoItem>();
-        CreateMap<TodoItem, TodoItemDto>().ReverseMap();
-
         CreateMap<ClientFeedback, ClientFeedbackDto>();
         CreateMap<CreateClientFeedbackDto, ClientFeedback>();
         CreateMap<UpdateClientFeedbackDto, ClientFeedback>();
@@ -84,5 +80,12 @@ public class PlatformAutoMapperProfile : Profile
         CreateMap<UpdateStakeAndScopeDto, StakeAndScope>();
         CreateMap<StakeAndScope, StakeAndScopeDto>().ReverseMap();
 
+        CreateMap<CreateUsersDto, Users>();
+        CreateMap<UpdateUsersDto, Users>();
+        CreateMap<Users, UsersDto>().ReverseMap();
+
+        CreateMap<CreateUserProjectDto, UserProject>();
+        CreateMap<UpdateUserProjectDto, UserProject>();
+        CreateMap<UserProject, UserProjectDto>().ReverseMap();
     }
 }

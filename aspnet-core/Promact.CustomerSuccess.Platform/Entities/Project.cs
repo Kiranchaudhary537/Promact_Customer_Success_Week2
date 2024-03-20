@@ -13,6 +13,7 @@ namespace Promact.CustomerSuccess.Platform.Entities
         public required string Status { get; set; }
         public required string Member { get; set; }
 
+        
         public virtual ICollection<ProjectResource>? Resources { get; set; }
         public virtual ICollection<ClientFeedback>? ClientFeedbacks { get; set; }
         public virtual ICollection<MeetingMinute>? MeetingMinutes { get; set; }

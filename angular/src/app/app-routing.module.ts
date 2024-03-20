@@ -32,75 +32,75 @@ const routes: Routes = [
         path: 'projects',
         component: ProjectsComponent,
       },
-    ],
-  },
-  {
-    path: 'projects/:id',
-    component: ProjectDetailComponent,
-    children: [
       {
-        path: '',
-        component: OverviewComponent,
-      },
-      {
-        path: 'overview',
-        component: OverviewComponent,
-      },
-      {
-        path: 'projectresources',
-        component: ProjectResources,
-      },
-      {
-        path: 'scopestake',
-        component: ScopeStakeComponent,
-      },
-      {
-        path: 'phase',
-        component: PhaseComponent,
-      },
-      {
-        path: 'approvedteam',
-        component: ApprovedTeamComponent,
-      },
-      {
-        path: 'clientfeedback',
-        component: ClientFeedbackComponent,
-      },
-      {
-        path: 'moms',
-        component: MomsComponent,
-      },
-      {
-        path: 'projectupdates',
-        component: ProjectUpdatesComponent,
-      },
-      {
-        path: 'stakeholder',
-        component: StakeholderComponent,
-      },
-      {
-        path: 'sprint',
-        component: SprintComponent,
-      },
-      {
-        path: 'riskprofile',
-        component: RiskProfileComponent,
-      },
-      {
-        path: 'budget',
-        component: ProjectBudgetComponent,
-      },
-      {
-        path: 'escalationmatrix',
-        component: EscalationMatrixComponent,
-      },
-      {
-        path: 'audithistory',
-        component: AuditHistoryComponent,
-      },
-      {
-        path: 'versionhistory',
-        component: VersionHistoryComponent,
+        path: 'projects/:id',
+        component: ProjectDetailComponent,
+        children: [
+          {
+            path: '',
+            component: OverviewComponent,
+          },
+          {
+            path: 'overview',
+            component: OverviewComponent,
+          },
+          {
+            path: 'projectresources',
+            component: ProjectResources,
+          },
+          {
+            path: 'scopestake',
+            component: ScopeStakeComponent,
+          },
+          {
+            path: 'phase',
+            component: PhaseComponent,
+          },
+          {
+            path: 'approvedteam',
+            component: ApprovedTeamComponent,
+          },
+          {
+            path: 'clientfeedback',
+            component: ClientFeedbackComponent,
+          },
+          {
+            path: 'moms',
+            component: MomsComponent,
+          },
+          {
+            path: 'projectupdates',
+            component: ProjectUpdatesComponent,
+          },
+          {
+            path: 'stakeholder',
+            component: StakeholderComponent,
+          },
+          {
+            path: 'sprint',
+            component: SprintComponent,
+          },
+          {
+            path: 'riskprofile',
+            component: RiskProfileComponent,
+          },
+          {
+            path: 'budget',
+            component: ProjectBudgetComponent,
+          },
+          {
+            path: 'escalationmatrix',
+            component: EscalationMatrixComponent,
+          },
+          {
+            path: 'audithistory',
+            component: AuditHistoryComponent,
+          },
+          {
+            path: 'versionhistory',
+            component: VersionHistoryComponent,
+          }
+        ],
       }
     ],
   },

@@ -1,32 +1,36 @@
 <div class="container">
   <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-2 border m-1 shadow">
       <div class="card p-3 mb-2">
         <h3 class="heading text-center">{{ allProjectData.length }}</h3>
         <span class="text1 text-center">All Projects</span>
       </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-2 border border m-1 shadow">
       <div class="card p-3 mb-2">
-        <h3 class="heading text-center ">{{ filterData('inprogress').length }}</h3>
-          <span class="text1 text-center">In Progress</span>
+        <h3 class="heading text-center">{{ filterData('inprogress').length }}</h3>
+        <span class="text1 text-center">In Progress</span>
       </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-2 border m-1 shadow">
       <div class="card p-3 mb-2">
         <h3 class="heading text-center">{{ filterData('hold').length }}</h3>
-          <span class="text1 text-center">Hold</span>
+        <span class="text1 text-center">Hold</span>
       </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-2 border m-1 shadow">
       <div class="card p-3 mb-2">
         <h3 class="heading text-center">{{ filterData('closed').length }}</h3>
-          <span class="text1 text-center">Closed</span>
+        <span class="text1 text-center">Closed</span>
       </div>
     </div>
   </div>
   <div>
-    <ul class="nav nav-tabs my-3 gap-2 flex-row overflow-hidden" id="ex1" role="tablist">
+    <ul
+      class="border-bottom nav nav-tabs my-3 gap-2 flex-row overflow-hidden"
+      id="ex1"
+      role="tablist"
+    >
       <li class="nav-item" role="presentation">
         <a
           class="nav-link"
@@ -95,6 +99,7 @@
             <th>Status</th>
             <th>Project Manager</th>
             <th>Members</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -120,6 +125,16 @@
             <td>
               <span class="badge bg-primary text-dark">{{ project.member }}</span>
             </td>
+            <td>
+              <div class="d-flex flex-row">
+                <button class="border mr-1" type="button" (click)="handleEdit(project.id)">
+                  <i class="fas fa-edit mr-1"></i>
+                </button>
+                <button class="border margin-1" type="button" (click)="handleDelete(project.id)">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </div>
+            </td>
           </tr>
           }
         </tbody>
@@ -128,3 +143,40 @@
   </div>
   }
 </div>
+<abp-modal [(visible)]="isModalOpen">
+  <ng-template #abpHeader>
+    <h3>Update Project</h3>
+  </ng-template>
+
+  <ng-template #abpBody>
+    <form id="project-form" [formGroup]="projectForm" (ngSubmit)="handleUpdateProject()">
+    <div class="form-group row">
+      <label for="statusSelect" class="col-sm-2 col-form-label">Status:</label>
+      <div class="col-sm-4">
+        <select class="form-control" id="statusSelect"  formControlName="status" [value]="selectedProject.status">
+          <option value="completed">Completed</option>
+          <option value="inprogress">In Progress</option>
+          <option value="hold">Hold</option>
+          <option value="closed">Closed</option>
+        </select>
+      </div>
+      <label for="numberInput" class="col-sm-2 col-form-label">Number:</label>
+      <div class="col-sm-4">
+        <input
+          type="number"
+          class="form-control"
+          id="numberInput"
+          placeholder="Enter Number"
+          formControlName="member"
+          [value]="selectedProject.member"
+        />
+      </div>
+    </div>
+    </form>
+  </ng-template>
+
+  <ng-template #abpFooter>
+    <button type="button" class="btn btn-secondary" abpClose>Close</button>
+    <button type="submit" class="btn btn-primary" (click)="handleUpdateProject()" >Save</button>
+    </ng-template>
+</abp-modal>

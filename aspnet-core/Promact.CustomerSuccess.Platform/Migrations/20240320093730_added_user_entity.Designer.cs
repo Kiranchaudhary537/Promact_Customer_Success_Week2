@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Promact.CustomerSuccess.Platform.Data;
@@ -12,9 +13,11 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Promact.CustomerSuccess.Platform.Migrations
 {
     [DbContext(typeof(PlatformDbContext))]
-    partial class PlatformDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240320093730_added_user_entity")]
+    partial class added_user_entity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -723,22 +726,6 @@ namespace Promact.CustomerSuccess.Platform.Migrations
                     b.ToTable("stakeholder", (string)null);
                 });
 
-            modelBuilder.Entity("Promact.CustomerSuccess.Platform.Entities.UserProject", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("ProjectId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("UsersId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("userproject", (string)null);
-                });
-
             modelBuilder.Entity("Promact.CustomerSuccess.Platform.Entities.Users", b =>
                 {
                     b.Property<Guid>("Id")
@@ -751,6 +738,9 @@ namespace Promact.CustomerSuccess.Platform.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<Guid[]>("ProjectId")
+                        .HasColumnType("uuid[]");
 
                     b.Property<string>("Role")
                         .IsRequired()

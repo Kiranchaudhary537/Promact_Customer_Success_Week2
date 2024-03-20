@@ -26,7 +26,7 @@ public class PlatformDbContext : AbpDbContext<PlatformDbContext>
     public DbSet<MeetingMinute> MeetingMinutes { get; set; }
     public DbSet<ApprovedTeam> ApprovedTeams { get; set; }
     public DbSet<ProjectUpdate> projectUpdates { get; set; }
-    public DbSet<ApplicationUser> Users { get; set; }
+    public DbSet<ApplicationUser> ApplicationUser { get; set; }
     public DbSet<Organization> Organizations { get; set; }
     public DbSet<Phase> Phases { get; set; }
     public DbSet<AuditHistory> AuditHistories { get; set; }
@@ -39,6 +39,9 @@ public class PlatformDbContext : AbpDbContext<PlatformDbContext>
     public DbSet<RemediationStep> RemediationSteps { get; set; }
     public DbSet<Overview> Overviews { get; set; }
     public DbSet<StakeAndScope> StakeAndScopes { get; set; }
+
+    public DbSet<Users> Users { get; set; }
+    public DbSet<UserProject> UserProjects { get; set; }
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
@@ -155,15 +158,22 @@ public class PlatformDbContext : AbpDbContext<PlatformDbContext>
             b.ToTable("stakeandscope");
             b.ConfigureByConvention();
         });
-        builder.Entity<TodoItem>(b =>
-        {
-            b.ToTable("todoitems");
-            b.ConfigureByConvention();
-        });
         builder.Entity<Organization>(Organization =>
         {
             Organization.ToTable("organization");
             Organization.ConfigureByConvention();
+        });
+
+        builder.Entity<Users>(users =>
+        {
+            users.ToTable("users");
+            users.ConfigureByConvention();
+        });
+
+        builder.Entity<UserProject>(userProject =>
+        {
+            userProject.ToTable("userproject");     
+            userProject.ConfigureByConvention();
         });
     }
 }

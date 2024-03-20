@@ -18,17 +18,17 @@ import { ThemeLeptonXModule } from '@abp/ng.theme.lepton-x';
 import { SideMenuLayoutModule } from '@abp/ng.theme.lepton-x/layouts';
 import { AccountLayoutModule } from '@abp/ng.theme.lepton-x/account';
 import { AuthModule } from '@auth0/auth0-angular';
-
+import { SharedModule } from './shared/shared.module';
 @NgModule({
   imports: [
     BrowserModule,
-    // AuthModule.forRoot({
-    //   domain: 'dev-p4ib51tdssuj8ngy.us.auth0.com',
-    //   clientId: 'hAGf8ohT9UrMcPIJtl93ml1YfF0WMtke',
-    //   authorizationParams: {
-    //     redirect_uri: window.location.origin
-    //   }
-    // }),
+    AuthModule.forRoot({
+      domain: 'dev-p4ib51tdssuj8ngy.us.auth0.com',
+      clientId: '0xGhFFQfdQrSFxIIpxP9dd1Xb6qzw4Ph',
+      authorizationParams: {
+        redirect_uri: window.location.origin
+      }
+    }),
     BrowserAnimationsModule,
     AppRoutingModule,
     CoreModule.forRoot({
@@ -42,14 +42,14 @@ import { AuthModule } from '@auth0/auth0-angular';
     TenantManagementConfigModule.forRoot(),
     SettingManagementConfigModule.forRoot(),
 
-
+    //SharedModule,
     FeatureManagementModule.forRoot(),
               ThemeLeptonXModule.forRoot(),
               SideMenuLayoutModule.forRoot(),
               AccountLayoutModule.forRoot(),
               
   ],
-  declarations: [AppComponent],
+  declarations: [AppComponent,],
   providers: [APP_ROUTE_PROVIDER],
   bootstrap: [AppComponent],
 })

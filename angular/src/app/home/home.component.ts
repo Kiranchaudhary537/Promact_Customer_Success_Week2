@@ -5,6 +5,9 @@ import { RouterOutlet } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProjectService } from '../Services/projectService';
 import { Project } from '../Model/ProjectModel';
+import { IdentityRoleService, IdentityUserService } from '@abp/ng.identity/proxy';
+import { UserService } from '../Services/userService';
+import { UserProjectService } from '../Services/userprojectService';
 
 @Component({
   standalone: true,
@@ -14,6 +17,8 @@ import { Project } from '../Model/ProjectModel';
   imports: [SharedModule, RouterOutlet, ReactiveFormsModule],
 })
 export class HomeComponent {
+  allUsers: any;
+  clients: Array<any>;
   isModalOpen: boolean;
   inProgress: boolean;
   currentStage: number = 1;
@@ -24,10 +29,7 @@ export class HomeComponent {
   managerForm = this.fb.group({
     manager: ['', [Validators.required]],
   });
-  managers = [
-    { id: 1, name: 'Dipa' },
-    { id: 2, name: 'Firoza' },
-  ];
+  managers = [];
   projectForm = this.fb.group({
     name: ['', [Validators.required]],
     description: ['', [Validators.required]],
@@ -35,24 +37,42 @@ export class HomeComponent {
 
   constructor(
     private authService: AuthService,
-    private config: ConfigStateService,
-    private  projectService:ProjectService,
-    private fb: FormBuilder
+    private projectService: ProjectService,
+    private fb: FormBuilder,
+    private userService: UserService,
+    private identityUser: IdentityUserService,
+    private identityRole: IdentityRoleService,
+    private userProjectService: UserProjectService
   ) {
+    this.identityUser
+      .getList({
+        maxResultCount: 100,
+      })
+      .subscribe(data => {
+        data.items.forEach(user => {
+          this.identityUser.getRoles(user.id).subscribe(userRole => {
+            console.log(userRole.items[0]);
+            if (userRole.items[0].name == 'projectManager') {
+              this.managers.push({
+                name: user?.name,
+                id: user?.id,
+                email:user?.email,
+              });
+            }
+          });
+        });
+      });
+
+    this.identityRole.getAllList().subscribe(d => {
+      console.log(d);
+    });
   }
   get hasLoggedIn(): boolean {
     return this.authService.isAuthenticated;
   }
 
+  ngOnInit(): void {}
 
-  ngOnInit(): void {
-    const currentUser = this.config.getOne("currentUser");
-    console.log(currentUser);
-  }
-  login() {
-    this.authService.navigateToLogin();
-    
-  }
   nextStage() {
     this.currentStage++;
   }
@@ -68,18 +88,51 @@ export class HomeComponent {
     if (this.currentStage === 1 && this.clientForm.invalid) return;
     if (this.currentStage === 2 && this.managerForm.invalid) return;
     console.log(this.projectForm.value);
-    
-    const modalData:Project={
-      name:this.projectForm.value.name,
-      description:this.projectForm.value.description,
-      projectManager:this.managerForm.value.manager,
-      member:"0",
-      status:"inprogress"
-    }
-    this.projectService.createProject(modalData).subscribe
-    ((data)=>{
+
+    const modalData: Project = {
+      name: this.projectForm.value.name,
+      description: this.projectForm.value.description,
+      projectManager: this.managerForm.value.manager,
+      member: '0',
+      status: 'inprogress',
+    };
+    //get user
+    const currentManagers = this.managers.filter(
+      item => item.name == this.managerForm.value.manager
+    );
+
+    this.projectService.createProject(modalData).subscribe(data => {
       this.isModalOpen = false;
       console.log(data);
-    })
+      this.userService
+        .createItem({
+          name: this.clientForm.value.clientName,
+          email: this.clientForm.value.clientEmail,
+          role: 'client',
+        })
+        .subscribe(res => {
+          console.log(res);
+          this.userProjectService.createItem({
+            projectId: data.id,
+            usersId: res.id,
+          });
+        });
+      currentManagers.forEach(e => {
+        console.log(e);
+        this.userService
+          .createItem({
+            name: e?.name,
+            email: e.email,
+            role: 'projectManager',
+          })
+          .subscribe(res => {
+            console.log(res);
+            this.userProjectService.createItem({
+              projectId: data.id,
+              usersId: res.id,
+            });
+          });
+      });
+    });
   }
 }
