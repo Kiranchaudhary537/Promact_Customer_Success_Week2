@@ -1,3 +1,4 @@
+import { ConfigStateService } from '@abp/ng.core';
 import { NgFor, NgIf } from '@angular/common';
 import { Component, Input, NgModule, OnInit } from '@angular/core';
 import {
@@ -22,14 +23,15 @@ import { OverviewService } from 'src/app/Services/overviewService';
 export class OverviewComponent implements OnInit {
   form: FormGroup;
   projectId: string = '';
-
+  unauthorizedPerson:boolean=false;
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private overviewService: OverviewService
+    private overviewService: OverviewService,
+    private config:ConfigStateService
   ) {
-    this.projectId = this.route.snapshot.pathFromRoot[1].params['id'];
-  }
+    this.projectId = this.route.snapshot.pathFromRoot[2].params['id'];
+      }
 
   ngOnInit(): void {
     this.fetchValues();
@@ -39,6 +41,7 @@ export class OverviewComponent implements OnInit {
       (data: any) => {
         const d = data.filter(e => e.projectId == this.projectId);
         if (d.length == 0) {
+        
           this.addNewDataToForm();
         }
         this.addDataToForm(d[0]);
@@ -48,6 +51,9 @@ export class OverviewComponent implements OnInit {
         console.error('Error fetching project details:', error);
       }
     );
+    if(this.config.getOne('currentUser').roles[0]=="client" || this.config.getOne('currentUser').roles[0]=="auditor" ){
+      this.unauthorizedPerson=true;
+   }
   }
 
   addDataToForm(e): void {
@@ -85,7 +91,7 @@ export class OverviewComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (!this.form.valid) {
+    if (!this.form.valid && this.unauthorizedPerson==true) {
       alert('Form in not valid');
       return;
     }
@@ -99,7 +105,7 @@ export class OverviewComponent implements OnInit {
       objectives: this.form.value.objectives,
       budget: this.form.value.budget,
     };
-
+    console.log(modelData);
     this.handleSubmit(modelData).then(data => {
       console.log(data);
     });

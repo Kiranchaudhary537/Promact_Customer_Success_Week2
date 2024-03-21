@@ -1,3 +1,4 @@
+import { ConfigStateService } from '@abp/ng.core';
 import { NgFor } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
@@ -34,15 +35,16 @@ export class ProjectResources implements OnInit {
       comment: new FormControl(''),
     }),
   });
-  unauthorizedPerson: boolean = true;
+  unauthorizedPerson: boolean = false;
   displayedColumns = ['Name','Role', 'AllocationPercentage', 'StartDate', 'EndDate', 'Comment'];
 
   constructor(
     private fb: FormBuilder,
     private projectResourceService: ProjectResourceService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private config:ConfigStateService
   ) {
-    this.projectId = this.route.snapshot.pathFromRoot[1].params['id'];
+    this.projectId = this.route.snapshot.pathFromRoot[2].params['id'];
   }
 
   ngOnInit(): void {
@@ -55,14 +57,15 @@ export class ProjectResources implements OnInit {
       error => {
         this.addExistingData([]);
         if (error.status == 403) {
-          this.unauthorizedPerson = false;
-          console.log(this.unauthorizedPerson);
           console.warn('Unauthorized access (403):', error);
         } else {
           console.error('Error fetching projects:', error);
         }
       }
     );
+    if(this.config.getOne('currentUser').roles[0]=="client" || this.config.getOne('currentUser').roles[0]=="auditor" ){
+      this.unauthorizedPerson=true;
+   }
   }
 
   addExistingData(data: any): void {
@@ -109,9 +112,12 @@ export class ProjectResources implements OnInit {
   }
 
   removeRow(index: number): void {
+    const getConfirmation=window.confirm("Do you want to delte");
+    if(getConfirmation==false){
+      return;
+    }
     const approveteamArray = this.resourcesForms.get('resourcesitems') as FormArray;
     const controlAtIndex = approveteamArray.at(index);
-    // console.log(controlAtIndex.value.id);
     this.projectResourceService.deleteProject(controlAtIndex.value.id).subscribe(
       data => {
         console.log(data);
@@ -125,7 +131,7 @@ export class ProjectResources implements OnInit {
 
   onSubmit(): void {
     
-    if (this.resourcesForms.valid) {
+    if (this.resourcesForms.valid && this.unauthorizedPerson==false) {
       this.resourcesForms.value.resourcesitems.map(e => {
         const modelDate: projectResourceModel = {
           projectId: this.projectId,
@@ -165,10 +171,3 @@ export class ProjectResources implements OnInit {
   }
 }
 
-// add for new
-// update for exsting
-// const dateString = "04/03/2024";
-// const parts = dateString.split('/');
-// const formattedDate = new Date(`${parts[2]}-${parts[1]}-${parts[0]}T00:00:00.000Z`).toISOString();
-
-// console.log(formattedDate);

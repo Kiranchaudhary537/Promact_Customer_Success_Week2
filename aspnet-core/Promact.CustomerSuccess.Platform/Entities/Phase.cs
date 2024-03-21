@@ -23,7 +23,6 @@ namespace Promact.CustomerSuccess.Platform.Entities
         [ForeignKey("Project")]
         public Guid ProjectId { get; set; }
         public ICollection<ApprovedTeam>? ApprovedTeams { get; set; }
-        public required string Description { get; set; }
         public virtual Project? Project { get; set; }
         public virtual ICollection<Sprint>? Sprints { get; set; }
 

@@ -1,10 +1,4 @@
-<!-- @if (unauthorizedPerson==false) {
-<div>
-  <div class="container mt-5">
-    <h3 class="text-center m-1">You are not authorized to view this table.</h3>
-  </div>
-</div>
-} @if (unauthorizedPerson==true) { -->
+
 <div>
   <div class="container mt-2 mb-2">
     <h2>Select Phase</h2>
@@ -60,6 +54,7 @@
                     class="form-control"
                     id="role"
                     formControlName="role"
+                    [readOnly]="unauthorizedPerson"
                   />
                 </td>
                 <td>
@@ -69,6 +64,7 @@
                     id="availability"
                     formControlName="availability"
                     placeholder="Enter Percantage"
+                    [readOnly]="unauthorizedPerson"
                   />
                 </td>
                 <td>
@@ -78,6 +74,7 @@
                     id="duration"
                     formControlName="duration"
                     placeholder="Enter Duration in hours"
+                    [readOnly]="unauthorizedPerson"
                   />
                 </td>
                 <td>
@@ -95,4 +92,3 @@
     }
   </div>
 </div>
-<!-- } -->

@@ -44,7 +44,7 @@ export class ApprovedTeamComponent implements OnInit {
     selectedPhase: new FormControl(''),
   });
 
-  unauthorizedPerson: boolean = true;
+  unauthorizedPerson: boolean = false;
   displayedColumns = ['No. Of resources', 'Role', ' Availability%', 'Duration'];
 
   allPhases: Array<Phase> = [];
@@ -55,7 +55,7 @@ export class ApprovedTeamComponent implements OnInit {
     private phaseService: PhaseService,
     private config:ConfigStateService
   ) {
-    this.projectId = this.route.snapshot.pathFromRoot[1].params['id'];
+    this.projectId = this.route.snapshot.pathFromRoot[2].params['id'];
   }
 
   ngOnInit(): void {
@@ -77,8 +77,6 @@ export class ApprovedTeamComponent implements OnInit {
       },
       error => {
         if (error.status == 403) {
-          this.unauthorizedPerson = false;
-          console.log(this.unauthorizedPerson);
           console.warn('Unauthorized access (403):', error);
         } else {
           console.error('Error fetching projects:', error);
@@ -91,7 +89,6 @@ export class ApprovedTeamComponent implements OnInit {
   }
 
   onSelectedPhaseChange(value: string): void {
-    // console.log(value);
     this.addExistingData(value);
   }
 
@@ -146,6 +143,10 @@ export class ApprovedTeamComponent implements OnInit {
   }
 
   removeRow(index: number): void {
+    const getConfirmation=window.confirm("Do you want to delte");
+    if(getConfirmation==false){
+      return;
+    }
     const approveteamArray = this.forms.get('formitem') as FormArray;
     const controlAtIndex = approveteamArray.at(index);
     this.approvedTeamService.deleteItem(controlAtIndex.value.id).subscribe(
@@ -160,7 +161,7 @@ export class ApprovedTeamComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.forms.valid) {
+    if (this.forms.valid && this.unauthorizedPerson==false) {
       this.forms.value.formitem.forEach(async e => {
         try {
           const modelDate: ApprovedTeam = {

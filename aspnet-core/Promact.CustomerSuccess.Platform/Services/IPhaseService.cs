@@ -9,7 +9,7 @@ namespace Promact.CustomerSuccess.Platform.Service
         Task<List<Phase>> GetAllAsync();
         Task<Phase> GetByIdAsync(Guid id);
         Task<Phase> CreateAsync(CreatePhaseDto input);
-        Task UpdateAsync(Guid id, UpdatePhaseDto input);
-        Task DeleteAsync(Guid id);
+        Task<Phase> UpdateAsync(Guid id, UpdatePhaseDto input);
+        Task<string> DeleteAsync(Guid id);
     }
 }

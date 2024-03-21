@@ -23,25 +23,38 @@ namespace Promact.CustomerSuccess.Platform.Service
             return entity;
         }
 
-        public Task DeleteAsync(Guid id)
+        public async Task<string> DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await _repository.DeleteAsync(id, autoSave: true);
+                return "Success";
+            }
+            catch (Exception ex)
+            {
+                return "Failed" + ex.ToString();
+            }
+
         }
 
-        public  async Task<List<Phase>> GetAllAsync()
+        public async Task<List<Phase>> GetAllAsync()
         {
             var entities = await _repository.GetListAsync();
             return entities;
         }
 
-        public Task<Phase> GetByIdAsync(Guid id)
+        public async Task<Phase> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var entity = await _repository.GetAsync(id);
+            return entity;
         }
 
-        public Task UpdateAsync(Guid id, UpdatePhaseDto input)
+        public async Task<Phase> UpdateAsync(Guid id, UpdatePhaseDto input)
         {
-            throw new NotImplementedException();
+            var entity = await _repository.GetAsync(id);
+            ObjectMapper.Map(input, entity);
+            await _repository.UpdateAsync(entity, autoSave: true);
+            return entity;
         }
     }
 }

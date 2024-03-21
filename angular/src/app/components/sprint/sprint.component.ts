@@ -1,3 +1,4 @@
+import { ConfigStateService } from '@abp/ng.core';
 import { NgFor } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import {
@@ -51,9 +52,10 @@ export class SprintComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private sprintService: SprintService,
-    private phaseService: PhaseService
+    private phaseService: PhaseService,
+    private config:ConfigStateService
   ) {
-    this.projectId = this.route.snapshot.pathFromRoot[1].params['id'];
+    this.projectId = this.route.snapshot.pathFromRoot[2].params['id'];
   }
 
   ngOnInit(): void {
@@ -74,14 +76,15 @@ export class SprintComponent implements OnInit {
       },
       error => {
         if (error.status == 403) {
-          this.unauthorizedPerson = false;
-          console.log(this.unauthorizedPerson);
           console.warn('Unauthorized access (403):', error);
         } else {
           console.error('Error fetching projects:', error);
         }
       }
     );
+    if(this.config.getOne('currentUser').roles[0]=="client" || this.config.getOne('currentUser').roles[0]=="auditor" ){
+      this.unauthorizedPerson=true;
+   }
   }
 
   onSelectedPhaseChange(value: string): void {
@@ -145,6 +148,10 @@ export class SprintComponent implements OnInit {
   }
 
   removeRow(index: number): void {
+    const getConfirmation=window.confirm("Do you want to delte");
+    if(getConfirmation==false){
+      return;
+    }
     const approveteamArray = this.forms.get('formitem') as FormArray;
     const controlAtIndex = approveteamArray.at(index);
     this.sprintService.deleteItem(controlAtIndex.value.id).subscribe(
@@ -159,7 +166,7 @@ export class SprintComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.forms.valid) {
+    if (this.forms.valid && this.unauthorizedPerson==false) {
       this.forms.value.formitem.forEach(async e => {
         try {
           const modelDate: SprintModel = {

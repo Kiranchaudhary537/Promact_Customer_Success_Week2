@@ -31,7 +31,7 @@ export class ScopeStakeComponent implements OnInit {
     private route: ActivatedRoute,
     private scopestakeService: ScopeStakeService
   ) {
-    this.projectId = this.route.snapshot.pathFromRoot[1].params['id'];
+    this.projectId = this.route.snapshot.pathFromRoot[2].params['id'];
   }
 
   ngOnInit(): void {
