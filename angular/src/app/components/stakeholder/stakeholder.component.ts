@@ -41,7 +41,7 @@ export class StakeholderComponent implements OnInit {
     private route: ActivatedRoute,
     private stakeholderService: StakeholderService
   ) {
-    this.projectId = this.route.snapshot.pathFromRoot[1].params['id'];
+    this.projectId = this.route.snapshot.pathFromRoot[2].params['id'];
   }
 
   ngOnInit(): void {

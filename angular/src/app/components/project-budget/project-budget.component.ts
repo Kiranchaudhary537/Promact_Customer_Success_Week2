@@ -1,3 +1,4 @@
+import { ConfigStateService } from '@abp/ng.core';
 import { NgFor } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import {
@@ -31,15 +32,16 @@ export class ProjectBudgetComponent implements OnInit {
       comments: new FormControl(''),
     }),
   });
-  unauthorizedPerson: boolean = true;
+  unauthorizedPerson: boolean = false;
   displayedColumns = ['Project Type', 'Duration In Months','Budgeted Hours'];
   levelType = ['FixedBudget', 'ManMonth'];
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private projectBudgetService: ProjectBudgetService
+    private projectBudgetService: ProjectBudgetService,
+    private config:ConfigStateService
   ) {
-    this.projectId = this.route.snapshot.pathFromRoot[1].params['id'];
+    this.projectId = this.route.snapshot.pathFromRoot[2].params['id'];
   }
 
   ngOnInit(): void {
@@ -52,14 +54,15 @@ export class ProjectBudgetComponent implements OnInit {
       error => {
         this.addExistingData([]);
         if (error.status == 403) {
-          this.unauthorizedPerson = false;
-          console.log(this.unauthorizedPerson);
           console.warn('Unauthorized access (403):', error);
         } else {
           console.error('Error fetching projects:', error);
         }
       }
     );
+    if(this.config.getOne('currentUser').roles[0]=="client" || this.config.getOne('currentUser').roles[0]=="auditor" ){
+      this.unauthorizedPerson=true;
+   }
   }
 
   addExistingData(data: any): void {
@@ -115,7 +118,7 @@ export class ProjectBudgetComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.forms.valid) {
+    if (this.forms.valid && this.unauthorizedPerson==false) {
       this.forms.value.formitem.forEach(async e => {
         try {
           const modelDate: EscalationMatrixModel = {

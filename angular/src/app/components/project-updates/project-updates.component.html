@@ -1,10 +1,4 @@
-@if (unauthorizedPerson==false) {
-<div>
-  <div class="container mt-5">
-    <h3 class="text-center m-1">You are not authorized to view this table.</h3>
-  </div>
-</div>
-} @if (unauthorizedPerson==true) {
+
 <div class="container mt-2">
   <button type="submit" class="btn btn-outline-success" (click)="addRow()">Add Row</button>
   <form [formGroup]="forms" (ngSubmit)="onSubmit()">
@@ -27,6 +21,7 @@
                 id="date"
                 formControlName="date"
                 placeholder="yyyy-mm-dd"
+                [readOnly]="unauthorizedPerson"
               />
             </td>
             <td>
@@ -36,6 +31,7 @@
                 id="updates"
                 placeholder="text"
                 formControlName="updates"
+                [readOnly]="unauthorizedPerson"
               />
             </td>
             <td>
@@ -49,4 +45,4 @@
     <button type="submit" class="btn btn-success">Submit</button>
   </form>
 </div>
-}
+

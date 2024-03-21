@@ -1,10 +1,4 @@
-@if (unauthorizedPerson==false) {
-<div>
-  <div class="container mt-5">
-    <h3 class="text-center m-1">You are not authorized to view this table.</h3>
-  </div>
-</div>
-} @if (unauthorizedPerson==true) {
+
 <div class="container mt-2">
   <button type="submit" class="btn btn-outline-success" (click)="addRow()">Add Row</button>
   <form [formGroup]="forms" (ngSubmit)="onSubmit()">
@@ -27,6 +21,7 @@
                 id="title"
                 formControlName="title"
                 placeholder="Text"
+                [readOnly]="unauthorizedPerson"
               />
             </td>
             <td>
@@ -36,6 +31,7 @@
                 id="startDate"
                 formControlName="startDate"
                 placeholder="yyyy-mm-dd"
+                [readOnly]="unauthorizedPerson"
               />
             </td>
             <td>
@@ -45,6 +41,7 @@
                 id="completionDate"
                 formControlName="completionDate"
                 placeholder="yyyy-mm-dd"
+                [readOnly]="unauthorizedPerson"
               />
             </td>
             <td>
@@ -54,6 +51,7 @@
                 id="approvalDate"
                 formControlName="approvalDate"
                 placeholder="yyyy-mm-dd"
+                [readOnly]="unauthorizedPerson"
               />
             </td>
             <td>
@@ -63,6 +61,7 @@
                 id="status"
                 placeholder="Select any from Delay"
                 formControlName="status"
+                [readOnly]="unauthorizedPerson"
               />
             </td>
             <td>
@@ -72,6 +71,7 @@
                 id="comments"
                 placeholder="Text"
                 formControlName="comments"
+                [readOnly]="unauthorizedPerson"
               />
             </td>
             <td>
@@ -85,4 +85,4 @@
     <button type="submit" class="btn btn-success">Submit</button>
   </form>
 </div>
-}
+

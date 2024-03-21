@@ -47,7 +47,7 @@ export class RiskProfileComponent implements OnInit {
     private route: ActivatedRoute,
     private riskProfileService: RiskProfileService
   ) {
-    this.projectId = this.route.snapshot.pathFromRoot[1].params['id'];
+    this.projectId = this.route.snapshot.pathFromRoot[2].params['id'];
   }
 
   ngOnInit(): void {
@@ -116,6 +116,10 @@ export class RiskProfileComponent implements OnInit {
   }
 
   removeRow(index: number): void {
+    const getConfirmation=window.confirm("Do you want to delte");
+    if(getConfirmation==false){
+      return;
+    }
     const approveteamArray = this.forms.get('formitem') as FormArray;
     const controlAtIndex = approveteamArray.at(index);
     this.riskProfileService.deleteItem(controlAtIndex.value.id).subscribe(

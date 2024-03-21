@@ -34,7 +34,7 @@ export class ClientFeedbackComponent implements OnInit {
       closure: new FormControl(''),
     }),
   });
-  unauthorizedPerson: boolean = true;
+  unauthorizedPerson: boolean = false;
   displayedColumns = [
     'Feedback type',
     'Receive date',
@@ -50,7 +50,7 @@ export class ClientFeedbackComponent implements OnInit {
     private clientFeedbackService: ClientFeedbackService,
     private config:ConfigStateService
   ) {
-    this.projectId = this.route.snapshot.pathFromRoot[1].params['id'];
+    this.projectId = this.route.snapshot.pathFromRoot[2].params['id'];
   }
 
   ngOnInit(): void {
@@ -63,8 +63,6 @@ export class ClientFeedbackComponent implements OnInit {
       error => {
         this.addExistingData([]);
         if (error.status == 403) {
-          // this.unauthorizedPerson = false;
-          console.log(this.unauthorizedPerson);
           console.warn('Unauthorized access (403):', error);
         } else {
           console.error('Error fetching projects:', error);
@@ -118,6 +116,10 @@ export class ClientFeedbackComponent implements OnInit {
   }
 
   removeRow(index: number): void {
+    const getConfirmation=window.confirm("Do you want to delte");
+    if(getConfirmation==false){
+      return;
+    }
     const approveteamArray = this.forms.get('formitem') as FormArray;
     const controlAtIndex = approveteamArray.at(index);
     this.clientFeedbackService.deleteItem(controlAtIndex.value.id).subscribe(
@@ -133,7 +135,7 @@ export class ClientFeedbackComponent implements OnInit {
 
   onSubmit(): void {
     console.log(this.forms)
-    if (this.forms.valid && this.unauthorizedPerson==true) {
+    if (this.forms.valid && this.unauthorizedPerson==false) {
       this.forms.value.formitem.forEach(async e => {
         try {
           const modelDate: ClientFeedback = {

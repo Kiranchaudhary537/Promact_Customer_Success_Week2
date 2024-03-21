@@ -80,7 +80,6 @@ namespace Promact.CustomerSuccess.Platform.DataSeed
                 ApprovalDate= DateTime.Now.AddDays(7),
                 Status=PhaseStatus.Delayed,
                 Comments="Initial phase",
-                Description="It's about planning"
             },
             new Phase
             {
@@ -90,8 +89,7 @@ namespace Promact.CustomerSuccess.Platform.DataSeed
                 CompletionDate= DateTime.Now.AddDays(7),
                 ApprovalDate= DateTime.Now.AddDays(1),
                 Status=PhaseStatus.Completed,
-                Comments="Initail phase",
-                Description="It's about planning"
+                Comments="Initail phase",   
             },
 
         };

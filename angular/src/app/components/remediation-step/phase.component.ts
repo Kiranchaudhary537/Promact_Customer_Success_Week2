@@ -40,7 +40,7 @@ export class PHaseComponent implements OnInit {
     private route: ActivatedRoute,
     private meetingMinuteService: MomService
   ) {
-    this.projectId = this.route.snapshot.pathFromRoot[1].params['id'];
+    this.projectId = this.route.snapshot.pathFromRoot[2].params['id'];
   }
 
   ngOnInit(): void {

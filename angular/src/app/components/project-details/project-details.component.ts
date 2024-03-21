@@ -1,4 +1,4 @@
-import { AuthService } from '@abp/ng.core';
+import { AuthService, ConfigStateService } from '@abp/ng.core';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
 import { GeneratePdfService } from 'src/app/Services/generatePdfService';
@@ -14,8 +14,9 @@ export class ProjectDetailComponent {
   id: string;
   projectId: string = '';
   constructor(private generatePdfService:GeneratePdfService,
+    private config:ConfigStateService,
     private route: ActivatedRoute) {
-    this.projectId = this.route.snapshot.pathFromRoot[1].params['id'];
+    this.projectId = this.route.snapshot.pathFromRoot[2].params['id'];
   }
   convertBase64ToPDF(base64String, filename = 'output.pdf'):void {
     const linkSource = `data:application/pdf;base64,${base64String}`;
