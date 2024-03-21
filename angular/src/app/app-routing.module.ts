@@ -18,6 +18,7 @@ import { OverviewComponent } from './components/overview/overview.component';
 import { PhaseComponent } from './components/phase/phase.component';
 import { ScopeStakeComponent } from './components/scopestake/scopestake.component';
 import { ProjectBudgetComponent } from './components/project-budget/project-budget.component';
+import { AddProjectComponent } from './components/app-project/app-project.component';
 
 const routes: Routes = [
   {
@@ -27,6 +28,10 @@ const routes: Routes = [
       {
         path: '',
         component: ProjectsComponent,
+      },
+      {
+        path: 'addproject',
+        component: AddProjectComponent,
       },
       {
         path: 'projects',

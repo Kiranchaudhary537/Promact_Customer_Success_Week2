@@ -1,4 +1,4 @@
-import { isArray, isObject } from '@abp/ng.core';
+import { ConfigStateService, isArray, isObject } from '@abp/ng.core';
 import { NgFor, NgIf } from '@angular/common';
 import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import {
@@ -26,6 +26,7 @@ import { PhaseService } from 'src/app/Services/phaseSerivce';
 export class ApprovedTeamComponent implements OnInit {
   data: Array<ApprovedTeam> = [];
   projectId: string = '';
+  
   phaseId: {
     id: string;
     number: any;
@@ -51,7 +52,8 @@ export class ApprovedTeamComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private approvedTeamService: ApprovedTeamService,
-    private phaseService: PhaseService
+    private phaseService: PhaseService,
+    private config:ConfigStateService
   ) {
     this.projectId = this.route.snapshot.pathFromRoot[1].params['id'];
   }
@@ -83,6 +85,9 @@ export class ApprovedTeamComponent implements OnInit {
         }
       }
     );
+    if(this.config.getOne('currentUser').roles[0]=="client" || this.config.getOne('currentUser').roles[0]=="auditor" ){
+       this.unauthorizedPerson=true;
+    }
   }
 
   onSelectedPhaseChange(value: string): void {

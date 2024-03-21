@@ -117,9 +117,11 @@
               <span class="">{{ project?.creationTime | date }}</span>
             </td>
             <td>
-              <span class="badge bg-success">{{ project.status }}</span>
+              <span *ngIf="project.status=='inprogress'" class="badge bg-success">{{ project.status }}</span>
+              <span *ngIf="project.status=='closed'" class="badge bg-danger">{{ project.status }}</span>
+              <span *ngIf="project.status=='hold'" class="badge bg-dark">{{ project.status }}</span>
             </td>
-            <td>
+            <td>  
               <span class="text-dark">{{ project.projectManager }}</span>
             </td>
             <td>

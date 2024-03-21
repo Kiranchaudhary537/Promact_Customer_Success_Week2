@@ -1,10 +1,10 @@
-@if (unauthorizedPerson==false) {
+<!-- @if (unauthorizedPerson==false) {
 <div>
   <div class="container mt-5">
     <h3 class="text-center m-1">You are not authorized to view this table.</h3>
   </div>
 </div>
-} @if (unauthorizedPerson==true) {
+} @if (unauthorizedPerson==true) { -->
 <div class="container mt-2">
   <button type="submit" class="btn btn-outline-success" (click)="addRow()">Add Row</button>
   <form [formGroup]="forms" (ngSubmit)="onSubmit()">
@@ -22,7 +22,12 @@
 
           <tr [formGroupName]="i">
             <td>
-              <select class="form-control" id="feedbacktype" formControlName="feedbacktype">
+              <select
+                class="form-control"
+                id="feedbacktype"
+                
+                formControlName="feedbacktype"
+              >
                 <option value="Positive">Positive</option>
                 <option value="Negative">Negative</option>
               </select>
@@ -34,15 +39,18 @@
                 id="receivedate"
                 formControlName="receivedate"
                 placeholder="yyyy-mm-dd"
+                [readOnly]="unauthorizedPerson"
               />
             </td>
             <td>
-              <input 
-              type="text" 
-              class="form-control" id="details" 
-              formControlName="details"
-              placeholder="text"
-               />
+              <input
+                type="text"
+                class="form-control"
+                id="details"
+                formControlName="details"
+                placeholder="text"
+                [readOnly]="unauthorizedPerson"
+              />
             </td>
             <td>
               <select class="form-control" id="feedbacktype" formControlName="action">
@@ -51,11 +59,14 @@
               </select>
             </td>
             <td>
-              <input type="text" class="form-control"
-               id="closure" 
-               formControlName="closure"
-               placeholder="yyyy-mm-dd"
-                />
+              <input
+                type="text"
+                class="form-control"
+                id="closure"
+                formControlName="closure"
+                placeholder="yyyy-mm-dd"
+                [readOnly]="unauthorizedPerson"
+              />
             </td>
             <td>
               <i class="fs-2 bi-trash-fill danger text-danger" (click)="removeRow(i)"></i>
@@ -68,4 +79,4 @@
     <button type="submit" class="btn btn-success">Submit</button>
   </form>
 </div>
-}
+<!-- } -->

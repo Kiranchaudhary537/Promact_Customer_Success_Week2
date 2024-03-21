@@ -1,3 +1,4 @@
+import { ConfigStateService } from '@abp/ng.core';
 import { NgFor } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
@@ -46,7 +47,8 @@ export class ClientFeedbackComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private clientFeedbackService: ClientFeedbackService
+    private clientFeedbackService: ClientFeedbackService,
+    private config:ConfigStateService
   ) {
     this.projectId = this.route.snapshot.pathFromRoot[1].params['id'];
   }
@@ -61,7 +63,7 @@ export class ClientFeedbackComponent implements OnInit {
       error => {
         this.addExistingData([]);
         if (error.status == 403) {
-          this.unauthorizedPerson = false;
+          // this.unauthorizedPerson = false;
           console.log(this.unauthorizedPerson);
           console.warn('Unauthorized access (403):', error);
         } else {
@@ -69,6 +71,9 @@ export class ClientFeedbackComponent implements OnInit {
         }
       }
     );
+    if(this.config.getOne('currentUser').roles[0]=="client" || this.config.getOne('currentUser').roles[0]=="auditor" ){
+      this.unauthorizedPerson=true;
+   }
   }
   addExistingData(data: any): void {
     let existingData: any = [];
@@ -128,7 +133,7 @@ export class ClientFeedbackComponent implements OnInit {
 
   onSubmit(): void {
     console.log(this.forms)
-    if (this.forms.valid) {
+    if (this.forms.valid && this.unauthorizedPerson==true) {
       this.forms.value.formitem.forEach(async e => {
         try {
           const modelDate: ClientFeedback = {

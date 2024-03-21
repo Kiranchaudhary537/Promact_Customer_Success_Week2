@@ -1,10 +1,10 @@
-@if (unauthorizedPerson==false) {
+<!-- @if (unauthorizedPerson==false) {
 <div>
   <div class="container mt-5">
     <h3 class="text-center m-1">You are not authorized to view this table.</h3>
   </div>
 </div>
-} @if (unauthorizedPerson==true) {
+} @if (unauthorizedPerson==true) { -->
 <div>
   <div class="container mt-2 mb-2">
     <h2>Select Phase</h2>
@@ -50,6 +50,7 @@
                     id="noofresources"
                     formControlName="noofresources"
                     placeholder="Enter Number"
+                    [readOnly]="unauthorizedPerson"
                   />
                 </td>
                 <td>
@@ -94,4 +95,4 @@
     }
   </div>
 </div>
-}
+<!-- } -->

@@ -1,24 +1,23 @@
 import { AuthService, ConfigStateService } from '@abp/ng.core';
 import { Component, OnInit } from '@angular/core';
-import { SharedModule } from '../shared/shared.module';
-import { RouterOutlet } from '@angular/router';
+import { SharedModule } from '../../shared/shared.module';
+import { Router, RouterOutlet } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ProjectService } from '../Services/projectService';
-import { Project } from '../Model/ProjectModel';
+import { ProjectService } from '../../Services/projectService';
+import { Project } from '../../Model/ProjectModel';
 import { IdentityRoleService, IdentityUserService } from '@abp/ng.identity/proxy';
-import { UserService } from '../Services/userService';
-import { UserProjectService } from '../Services/userprojectService';
+import { UserService } from '../../Services/userService';
+import { UserProjectService } from '../../Services/userprojectService';
 
 @Component({
   standalone: true,
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
+  selector: 'project-route',
+  templateUrl: './app-project.componet.html',
   imports: [SharedModule, RouterOutlet, ReactiveFormsModule],
 })
-export class HomeComponent {
+export class AddProjectComponent {
   allUsers: any;
-  clients: Array<any>;
+  clients=[];
   isModalOpen: boolean;
   inProgress: boolean;
   currentStage: number = 1;
@@ -41,33 +40,43 @@ export class HomeComponent {
     private userService: UserService,
     private identityUser: IdentityUserService,
     private identityRole: IdentityRoleService,
-    private userProjectService: UserProjectService
+    private userProjectService: UserProjectService,
+    private router:Router
   ) {
-    // this.identityUser
-    //   .getList({
-    //     maxResultCount: 100,
-    //   })
-    //   .subscribe(data => {
-    //     data.items.forEach(user => {
-    //       this.identityUser.getRoles(user.id).subscribe(userRole => {
-    //         console.log(userRole.items[0]);
-    //         if (userRole.items[0].name == 'projectManager') {
-    //           this.managers.push({
-    //             name: user?.name,
-    //             id: user?.id,
-    //             email: user?.email,
-    //           });
-    //         }
-    //       });
-    //     });
-    //   });
+    this.identityUser
+      .getList({
+        maxResultCount: 100,
+      })
+      .subscribe(data => {
+        data.items.forEach(user => {
+          this.identityUser.getRoles(user.id).subscribe(userRole => {
+            console.log(userRole.items[0]);
+            if (userRole.items[0].name == 'projectManager') {
+              this.managers.push({
+                name: user?.name,
+                id: user?.id,
+                email: user?.email,
+              });
+            }
+            else if(userRole.items[0].name == 'client'){
+                this.clients.push({
+                    name: user?.name,
+                    id: user?.id,
+                    email: user?.email,
+                  });
+            }
+          });
+        });
+      });
 
-    // this.identityRole.getAllList().subscribe(d => {
-    //   console.log(d);
-    // });
+    this.identityRole.getAllList().subscribe(d => {
+      console.log(d);
+    });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.isModalOpen=true;
+  }
 
   nextStage() {
     this.currentStage++;
@@ -94,21 +103,24 @@ export class HomeComponent {
       item => item.name == this.managerForm.value.manager
     );
 
+    console.log(this.clients);
     this.projectService.createProject(modalData).subscribe(data => {
       console.log(data);
+      //check client with same id exist then 
+      const existedClient:any=this.clients.filter(item=>item.email==this.clientForm.value.clientEmail);
       this.userService
-        .createItem({
-          name: this.clientForm.value.clientName,
-          email: this.clientForm.value.clientEmail,
-          role: 'client',
-        })
-        .subscribe(res => {
-          console.log(res);
-          this.userProjectService.createItem({
-            projectId: data.id,
-            usersId: res.id,
-          }).subscribe((d)=>{});
-        });
+      .createItem({
+        name: this.clientForm.value.clientName,
+        email: this.clientForm.value.clientEmail,
+        role: 'client',
+      })
+      .subscribe(res => {
+        console.log(res);
+        this.userProjectService.createItem({
+          projectId: data.id,
+          usersId: existedClient[0].id,
+        }).subscribe((d)=>{});
+      });
       currentManagers.forEach(e => {
         this.userService
           .createItem({
@@ -125,6 +137,7 @@ export class HomeComponent {
           });
       });
       this.isModalOpen = false;
+      this.router.navigate(['/']);
     });
   }
 }

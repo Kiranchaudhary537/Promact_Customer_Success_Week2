@@ -1,7 +1,10 @@
 <div class="container-fluid bg-white" >
   <div class="d-flex col ">
     <div class="mr-2 p-2 border-end border-r">
-      <button type="button" class="btn btn-primary mb-2" (click)="isModalOpen = true">
+      <button type="button" class="btn btn-primary mb-2" 
+      routerLink="addproject"
+      routerLinkActive="active"
+      ariaCurrentWhenActive="page">
         <i class="fs-5 bi-plus"></i><span class="d-none d-sm-inline">New Projects</span>
       </button>
       <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-start w-100" id="menu">
@@ -45,7 +48,7 @@
   </div>
 </div>
 
-<abp-modal [(visible)]="isModalOpen">
+<!-- <abp-modal [(visible)]="isModalOpen">
   <ng-template #abpHeader>
     <h3>Modal Title</h3>
   </ng-template>
@@ -128,4 +131,4 @@
     </button>
     }
   </ng-template>
-</abp-modal>
+</abp-modal> -->
